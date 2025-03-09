@@ -21,11 +21,11 @@ public class Weapon191 : WeaponBase
         this.transform.localPosition = new Vector3(0, 2f, 0);
     }
     
-    public override void Fire(Func<BulletData> func, float direction, float speed, float range)
+    public override void Fire(float direction, float speed, float range)
     {
         if (isHold)
         {
-            BulletData bullet = func();
+            BulletData bullet = BulletsPool.Instance.GetBullet("PlayerBullet");
             
             bullet.gameObject.transform.position = this.transform.position;
             bullet.gameObject.transform.rotation = Quaternion.Euler(0, 0, direction);
@@ -34,7 +34,7 @@ public class Weapon191 : WeaponBase
             // bullet.gameObject.transform.rotation = this.transform.localRotation;
             bullet.gameObject.SetActive(true);
             
-            BulletData bullet2 = func();
+            BulletData bullet2 = BulletsPool.Instance.GetBullet("PlayerBullet");
             bullet2.gameObject.transform.position = this.transform.position;
             bullet2.gameObject.transform.rotation = Quaternion.Euler(0, 0, direction + 180);
             bullet2.bulletScript.SetSpeed(speed * 2);

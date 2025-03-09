@@ -65,12 +65,13 @@ public class BulletsPool : MonoBehaviour
         return newBulletData;
     }
     
-    public BulletData GetBullet()
+    public BulletData GetBullet(string t)
     {
         foreach(BulletData bullet in bulletPool)
         {
             if (!bullet.gameObject.activeInHierarchy)
             {
+                bullet.gameObject.tag = t;
                 return bullet;
             }
         }

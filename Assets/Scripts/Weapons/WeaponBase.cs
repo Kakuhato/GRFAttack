@@ -12,5 +12,5 @@ public class WeaponBase : MonoBehaviour
     
     public virtual void SetParent(Transform parent) {}
     
-    public virtual void Fire(Func<BulletData> func, float direction, float speed, float range) {}
+    public virtual void Fire(float direction, float speed, float range) {}
 }
