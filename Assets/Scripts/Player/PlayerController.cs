@@ -7,8 +7,8 @@ public class PlayerController : MonoBehaviour
 {
 
     public float atk = 10f;
-    public float maxHp = 10f;
-    public float nowHp = 10f;
+    public int maxHp = 10;
+    public int nowHp = 10;
 
     public float moveSpeed = 10;
     public float attackSpeed = 1;
@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("Reward"))
         {
             WeaponBase we = other.GetComponent<WeaponBase>();
-            we.SetParent(this.weapon);
+            we.ResetParent(this.weapon);
             fireController.AddWeapon(we);
         }
     }

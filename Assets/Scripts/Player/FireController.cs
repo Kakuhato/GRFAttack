@@ -5,13 +5,7 @@ using UnityEngine;
 using BulletData = Utils.BulletData;
 public class FireController : MonoBehaviour
 {
-    
     private List<WeaponBase> weapons = new List<WeaponBase>();
-    
-    public void Start()
-    {
-
-    }
 
     public void Fire(Vector3 position, float direction, float speed, float range)
     {

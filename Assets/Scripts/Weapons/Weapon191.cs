@@ -2,10 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils;
 using BulletData = Utils.BulletData;
 
 public class Weapon191 : WeaponBase
 {
+    
+    public RoundPosition rp = RoundPosition.Top;
+    public override RoundPosition RP => rp;
+    
     public override void SetHold()
     {
         isHold = true;
@@ -13,12 +18,11 @@ public class Weapon191 : WeaponBase
         print(this.transform.position);
     }
     
-    public override void SetParent(Transform parent)
+    public override void ResetParent(Transform parent)
     {
-        this.transform.parent = parent;
-        this.transform.position = parent.position;
+        this.transform.SetParent(parent);
         this.transform.localRotation = Quaternion.Euler(0, 0, 0);
-        this.transform.localPosition = new Vector3(0, 2f, 0);
+        this.transform.localPosition = Tool.GetRoundPosition(this.RP);
     }
     
     public override void Fire(float direction, float speed, float range)
@@ -33,13 +37,6 @@ public class Weapon191 : WeaponBase
             bullet.bulletScript.SetRange(range);
             // bullet.gameObject.transform.rotation = this.transform.localRotation;
             bullet.gameObject.SetActive(true);
-            
-            BulletData bullet2 = BulletsPool.Instance.GetBullet("PlayerBullet");
-            bullet2.gameObject.transform.position = this.transform.position;
-            bullet2.gameObject.transform.rotation = Quaternion.Euler(0, 0, direction + 180);
-            bullet2.bulletScript.SetSpeed(speed * 2);
-            bullet2.bulletScript.SetRange(range);
-            bullet2.gameObject.SetActive(true);
         }
     }
 

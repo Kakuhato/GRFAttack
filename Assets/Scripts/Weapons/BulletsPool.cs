@@ -33,7 +33,7 @@ public class BulletsPool : MonoBehaviour
         if (_instance == null)
         {
             _instance = this;
-            DontDestroyOnLoad(gameObject); // 确保在场景切换时不被销毁
+            // DontDestroyOnLoad(gameObject); // 确保在场景切换时不被销毁
         }
         else
         {
@@ -52,10 +52,9 @@ public class BulletsPool : MonoBehaviour
     
     private BulletData CreateBullet()
     {
-        GameObject newBullet = Instantiate(bulletPrefab, Vector3.zero, Quaternion.identity);
+        GameObject newBullet = Instantiate(bulletPrefab, Vector3.zero, Quaternion.identity, this.transform);
         // newBullet.tag = "PlayerBullet";
         newBullet.SetActive(false);
-        newBullet.transform.SetParent(this.transform);
         Bullet newBulletScript = newBullet.GetComponent<Bullet>();
         BulletData newBulletData = new BulletData
         {

@@ -4,21 +4,29 @@ using UnityEngine;
 
 public abstract class EnemyBase : MonoBehaviour
 {
-    
-    public float atk;
-    public float maxHP;
-    public float nowHP;
+    public float maxHp;
+    public float nowHp;
     public float moveSpeed;
     public float attackSpeed;
+    public float attackRange;
+    public float attackCd;
     
-    public virtual void Move()
+    public virtual void Move() { }
+    
+    public virtual void Attack() { }
+    
+    public virtual void GetDamage(float damage)
     {
-        // Move the enemy
+        nowHp -= damage;
+        if (nowHp <= 0)
+        {
+            Die();
+        }
     }
 
     public virtual void Die()
     {
-        Destroy( this.gameObject );
+        Destroy(this.gameObject);
     }
     
 }
