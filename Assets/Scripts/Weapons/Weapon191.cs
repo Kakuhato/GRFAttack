@@ -15,7 +15,7 @@ public class Weapon191 : WeaponBase
     {
         isHold = true;
         
-        print(this.transform.position);
+        // print(this.transform.position);
     }
     
     public override void ResetParent(Transform parent)

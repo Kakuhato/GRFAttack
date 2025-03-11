@@ -10,7 +10,21 @@ public class Tower : EnemyBase
     {
         // Move the enemy
         this.transform.Rotate(Vector3.forward, Time.deltaTime * this.moveSpeed, Space.Self);
-        this.transform.Translate(Time.deltaTime * 0.5f * Vector3.left, Space.World);
+    }
+    
+    private bool IsPlayerInRange()
+    {
+        return Vector3.Distance(GameController.Instance.GetPlayerPosition(), this.transform.position) < this.attackRange;
+    }
+    
+    private float RotateTowardsPlayer()
+    {
+        Vector2 direction = GameController.Instance.GetPlayerPosition() - transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90f;
+
+        Quaternion targetRotation = Quaternion.Euler(0, 0, angle);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 1f * Time.deltaTime);
+        return (angle - transform.eulerAngles.z - 90f) % 90f;
     }
 
     public override void Attack()
@@ -46,17 +60,26 @@ public class Tower : EnemyBase
     // Update is called once per frame
     void Update()
     {
-        Move();
-        Attack();
+        if (IsPlayerInRange())
+        {
+            if (Mathf.Abs(RotateTowardsPlayer()) < 30)
+            {
+                Attack();
+            }
+        }
+        else
+        {
+            Move();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("PlayerBullet"))
         {
-            Vector2 direction = other.GetComponent<Bullet>().GetDirection();
-            this.transform.position += new Vector3(direction.x, direction.y, 0) * 0.5f;
-            this.GetDamage(1f);
+            // Vector2 direction = other.GetComponent<Bullet>().GetDirection();
+            // this.transform.position += new Vector3(direction.x, direction.y, 0) * 0.5f;
+            base.GetDamage(1f);
         }
     }
 }

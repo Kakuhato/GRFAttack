@@ -10,6 +10,7 @@ public abstract class EnemyBase : MonoBehaviour
     public float attackSpeed;
     public float attackRange;
     public float attackCd;
+    // public bool isPlayerInRange = false;
     
     public virtual void Move() { }
     
