@@ -13,13 +13,14 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 10;
     public float attackSpeed = 1;
     public float bulletSpeed = 10;
-    public float attackRange = 1;
+    public float attackRange = 2;
     
     public Transform crosshair;
     public Transform weapon;
     
     private Camera mainCamera;
     private FireController fireController;
+    private float horizontalMove;
     
 
     // Start is called before the first frame update
@@ -40,11 +41,20 @@ public class PlayerController : MonoBehaviour
         {
             Fire();
         }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            print("!");
+            AOE();
+        }
     }
+
+
 
     public void Move()
     {
-        this.transform.Translate(Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime * Vector3.right);
+        horizontalMove = Input.GetAxis("Horizontal");
+        this.transform.Translate( horizontalMove * moveSpeed * Time.deltaTime * Vector3.right);
         this.transform.Translate(Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime * Vector3.up);
     }
     
@@ -74,6 +84,32 @@ public class PlayerController : MonoBehaviour
     public void Die()
     {
         Destroy(this.gameObject);
+    }
+
+    public void AOE()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(
+            this.transform.position, 
+            this.attackRange,
+            1 << LayerMask.NameToLayer("Enemy")
+            );
+        if(colliders.Length > 0)
+        {
+            print("?");
+            foreach (var collider in colliders)
+            {
+                if (collider.CompareTag("Enemy"))
+                {
+                    collider.GetComponent<EnemyBase>().GetDamage(2f);
+                }
+            }
+        }
+    }
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(this.transform.position, this.attackRange);
     }
     
     void OnTriggerEnter2D(Collider2D other)
