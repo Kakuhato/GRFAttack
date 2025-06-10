@@ -15,6 +15,36 @@ public class StatsMediator
     {
         modifiers.AddLast(modifier);
         Queries += modifier.Handle;
+
+        modifier.OnDispose += _ =>
+        {
+            modifiers.Remove(modifier);
+            Queries -= modifier.Handle;
+        };
+    }
+
+    public void Update(float deltaTime)
+    {
+        var node = modifiers.First;
+        while (node != null)
+        {
+            var modifier = node.Value;
+            modifier.Update(deltaTime);
+            node = node.Next;
+        }
+
+        node = modifiers.First;
+        while (node != null)
+        {
+            var nextNode = node.Next;
+            if (node.Value.MarkedForRemoval)
+            {
+                node.Value.Dispose();
+            }
+
+            node = nextNode;
+        }
+
     }
 
 }

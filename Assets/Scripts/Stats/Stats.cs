@@ -11,8 +11,35 @@ public enum StatsType
 public class Stats
 {
     private readonly BaseStats baseStats;
+    private readonly StatsMediator mediator;
     
-    public int Attack => baseStats.attack;
+    public StatsMediator Mediator => mediator;
     
-    public int Defence => baseStats.defence;
+    public int Attack
+    {
+        get
+        {
+            var q = new Query(StatsType.Attack, baseStats.attack);
+            mediator.PerformerQuery(this, q);
+            return q.Value;
+        }
+    }
+
+    public int Defence
+    {
+        get
+        {
+            var q = new Query(StatsType.Defence, baseStats.defence);
+            mediator.PerformerQuery(this, q);
+            return q.Value;
+        }
+    }
+    
+    public Stats(StatsMediator mediator, BaseStats baseStats)
+    {
+        this.mediator = mediator;
+        this.baseStats = baseStats;
+    }
+
+    public override string ToString() => $"Attack: {Attack}, Defence: {Defence}";
 }
