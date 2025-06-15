@@ -13,7 +13,7 @@ public class GameController : MonoBehaviour
         {
             if (_instance == null)
             {
-                _instance = FindObjectOfType<GameController>();
+                _instance = FindAnyObjectByType<GameController>();
             }
 
             return _instance;

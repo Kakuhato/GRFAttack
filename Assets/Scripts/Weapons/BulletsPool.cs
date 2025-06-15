@@ -18,6 +18,7 @@ public class BulletsPool : MonoBehaviour
             if (_instance == null)
             {
                 _instance = FindObjectOfType<BulletsPool>();
+                // 其他脚本访问这个属性时，可能这个脚本的Awake()还没有运行，因此_instance可能仍然为null
                 if (_instance == null)
                 {
                     GameObject obj = new GameObject("BulletsPool");
