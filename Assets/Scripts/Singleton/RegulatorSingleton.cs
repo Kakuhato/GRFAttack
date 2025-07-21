@@ -46,6 +46,7 @@ public class RegulatorSingleton<T> : MonoBehaviour where T : Component
             if(old.GetComponent<RegulatorSingleton<T>>().InitialTime < this.InitialTime)
             {
                 Destroy(old.gameObject);
+                // TODO: 单独写一个销毁函数，释放上一个实例中的内容
             }
         }
 
