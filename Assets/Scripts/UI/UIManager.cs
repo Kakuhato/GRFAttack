@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class UIManager : RegulatorSingleton<UIManager>
@@ -8,7 +9,9 @@ public class UIManager : RegulatorSingleton<UIManager>
     private Dictionary<string, BasePanel> panels = new Dictionary<string, BasePanel>();
     
     private Transform canvasTransform;
-
+    
+    private Camera uiCamera;
+    
     public T ShowPanel<T>() where T : BasePanel
     {
         string panelName = typeof(T).Name;
@@ -74,7 +77,38 @@ public class UIManager : RegulatorSingleton<UIManager>
     protected override void InitialSingleton()
     {
         base.InitialSingleton();
-        this.canvasTransform = GameObject.Find("Canvas").transform;
+        this.canvasTransform = GameObject.Find("Canvas")?.transform;
+        // 如果没找到，则加载Canvas预制体
+        if (this.canvasTransform == null)
+        {
+            GameObject canvasPrefab = Resources.Load<GameObject>("UI/Canvas");
+            if (canvasPrefab == null)
+            {
+                Debug.LogError("Canvas prefab not found in Resources/UI.");
+                return;
+            }
+            GameObject canvasObject = GameObject.Instantiate(canvasPrefab);
+            this.canvasTransform = canvasObject.transform;
+        }
+        
+        
+        this.uiCamera = GameObject.Find("UI Camera")?.GetComponent<Camera>();
+        if(uiCamera == null)
+        {
+            GameObject uiCameraPrefab = Resources.Load<GameObject>("UI/UICamera");
+            if(uiCameraPrefab == null)
+            {
+                Debug.LogError("UI Camera prefab not found in Resources/UI.");
+                return;
+            }
+            GameObject uiCameraObject = GameObject.Instantiate(uiCameraPrefab);
+            this.uiCamera = uiCameraObject.GetComponent<Camera>();
+            
+        }
+        // 将uiCamera作为Canvas的渲染相机
+        this.canvasTransform.GetComponent<Canvas>().worldCamera = this.uiCamera;
+        
+        DontDestroyOnLoad(this.uiCamera.gameObject);
         DontDestroyOnLoad(this.canvasTransform.gameObject);
     }
 }

@@ -15,7 +15,10 @@ public class ChosenDoll : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     [Required] public Toggle toggle;
     private bool isChosen = false;
 
-    public event Action OnChosen = delegate { };
+    public int dollId = 0;
+    public string dollName = "Default";
+
+    public event Action<int> OnChosen = delegate { };
     
     private void Start()
     {
@@ -75,13 +78,6 @@ public class ChosenDoll : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         isChosen = !isChosen;
         toggle.isOn = isChosen;
-        OnChosen.Invoke();
+        OnChosen.Invoke(dollId);
     }
-
-    public void check()
-    {
-        print("checked!");
-    }
-    
-    
 }

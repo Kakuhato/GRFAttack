@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ChooseDollPanel : BasePanel
@@ -19,13 +20,14 @@ public class ChooseDollPanel : BasePanel
         if(dollNameText == null)
         {
             dollNameText = transform.Find("DollNameText").GetComponent<TextMeshProUGUI>();
-            print("?");
         }
-        dollsList.OnDollChosen +=
+        dollsList.AddOnChooseListener(
             (index) =>
             {
+                GameDataManager.Instance.dollData.dollId = index;
                 dollNameText.text = index.ToString();
-            };
+            }
+            );
         
         dollNameText.text = GameDataManager.Instance.dollData.dollId.ToString();
         
@@ -41,6 +43,11 @@ public class ChooseDollPanel : BasePanel
             () =>
             {
                 print("action");
+                UIManager.Instance.HidePanel<ChooseDollPanel>();
+                
+                // TODO: 这一部分逻辑之后需要移入GameManager
+                SceneManager.LoadScene("Scenes/BattleScene");
+                UIManager.Instance.ShowPanel<GamePanel>();
             }
         );
 

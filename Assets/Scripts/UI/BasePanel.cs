@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class BasePanel : MonoBehaviour
 {
     protected bool isOpen;
-    protected string name;
+    protected string PanelName;
     
     protected CanvasGroup canvasGroup;
     
@@ -37,14 +37,14 @@ public class BasePanel : MonoBehaviour
     {
         this.isOpen = true;
         canvasGroup.alpha = 1f;
-        OnOpenPanel.Invoke(this.name);
+        OnOpenPanel.Invoke(this.PanelName);
     }
 
     public virtual void ClosePanel()
     {
         this.isOpen = false;
         canvasGroup.alpha = 0f;
-        OnClosePanel.Invoke(this.name);
+        OnClosePanel.Invoke(this.PanelName);
         Destroy(this.gameObject);
     }
 
