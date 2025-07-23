@@ -1,7 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-public enum OperatorType{ Add, Multiply }
+public enum OperatorType
+{
+    Add,
+    Multiply
+}
 
 public class StatModifierPickup : Pickup
 {
@@ -10,7 +14,7 @@ public class StatModifierPickup : Pickup
     [SerializeField] private int value = 10;
     [SerializeField] private float duration = 5f;
 
-    protected override void ApplyPickupEffect(Entity entity)
+    protected override bool ApplyPickupEffect(Entity entity)
     {
         StatModifier modifier = operatorType switch
         {
@@ -18,7 +22,9 @@ public class StatModifierPickup : Pickup
             OperatorType.Multiply => new BasicStatModifier(type, duration, v => v * value),
             _ => throw new ArgumentOutOfRangeException()
         };
-        
+
         entity.Stats.Mediator.AddModifier(modifier);
+
+        return true;
     }
 }

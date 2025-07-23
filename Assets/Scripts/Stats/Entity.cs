@@ -9,6 +9,11 @@ public class Entity : MonoBehaviour, Ivisitable
     [SerializeField, InlineEditor, Required]
     private BaseStats baseStats;
 
+    [SerializeField, InlineEditor, Required]
+    private HealthData healthData;
+
+    public HealthData Health => healthData;
+
     public Stats Stats { get; private set; }
 
     private void Awake()

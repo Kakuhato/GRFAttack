@@ -2,81 +2,81 @@ using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    [SerializeField, Required] private HealthData healthData;
+    [SerializeField, Required] private HealthPatten healthPatten;
+
     private GameObject heartItem;
     private LinkedList<GameObject> heartList = new LinkedList<GameObject>();
-    
+
+
+    private int HealthLimit = 10;
+
+
     // 后面可采用工厂模式
     [Button("Add Health")]
-    public void AddHealth()
+    public void AddHealth(HealthType healthType)
     {
-        if (RedCount < RedLimit)
+        if (healthType == HealthType.Red)
         {
-            RedCount++;
-            GameObject heart = GameObject.Instantiate(heartItem,transform);
-            Image sr = heart.GetComponent<Image>();
-            sr.sprite = healthData.redHeart;
-            sr.color = new Color(255, 255, 255, 1);
+            GameObject heart = healthPatten.CreateRed(heartItem, transform);
+            heartList.AddFirst(heart);
+            RemoveExtraHeart();
+        }
+        else if (healthType == HealthType.Soul)
+        {
+            GameObject heart = healthPatten.CreateSoul(heartItem, transform);
             heartList.AddLast(heart);
         }
-        else
-        {
-            GameObject heart = GameObject.Instantiate(heartItem,transform);
-            Image sr = heart.GetComponent<Image>();
-            sr.sprite = healthData.soulHeart;
-            sr.color = new Color(255, 255, 255, 1);
-            heartList.AddLast(heart);
-        }
-        HealthCount++;
     }
-    
-    
-    private int HealthLimit = 10;
-    private int HealthCount;
-    private int RedLimit;
-    private int RedCount;
-    
-    
+
+    // 删除多余的血量图标
+    private void RemoveExtraHeart()
+    {
+        while (heartList.Count > HealthLimit)
+        {
+            GameObject heart = heartList.Last.Value;
+            heartList.RemoveLast();
+            Destroy(heart);
+        }
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
-        if (healthData == null)
+        if (healthPatten == null)
         {
             Debug.LogError("HealthData is not assigned in the inspector.");
             return;
         }
 
-        RedLimit = healthData.initialHealth;
-        RedCount = RedLimit - 1;
-        HealthCount = RedCount;
+        int redCount = GameManager.Instance.initialRedHealth;
+        int soulCount = GameManager.Instance.initialSoulHealth;
 
         heartItem = Resources.Load<GameObject>("UI/Heart");
-        for (int i = 0; i < HealthCount; i++)
+        for (int i = 0; i < redCount; i++)
         {
             // TODO: 这部分逻辑需要抽出
-            GameObject heart = GameObject.Instantiate(heartItem);
-            heart.transform.SetParent(transform, false);
-            Image sr = heart.GetComponent<Image>();
-            if (i < RedLimit)
-            {
-                sr.sprite = healthData.redHeart;
-                sr.color = new Color(255, 255, 255, 1);
-            }
+            GameObject heart = healthPatten.CreateRed(heartItem, transform);
             heartList.AddLast(heart);
         }
+
+        for (int i = 0; i < soulCount; i++)
+        {
+            GameObject heart = healthPatten.CreateSoul(heartItem, transform);
+            heartList.AddLast(heart);
+        }
+
+        RemoveExtraHeart();
     }
-    
-    
+
 
     // Update is called once per frame
     void Update()
     {
-        
     }
-    
-    
 }

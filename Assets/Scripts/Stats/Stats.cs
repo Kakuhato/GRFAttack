@@ -5,17 +5,19 @@ using UnityEngine;
 public enum StatsType
 {
     Attack,
-    Defence,
+    ShootRange,
+    Speed,
+    ShootSpeed,
 }
 
 public class Stats
 {
     private readonly BaseStats baseStats;
     private readonly StatsMediator mediator;
-    
+
     public StatsMediator Mediator => mediator;
-    
-    public int Attack
+
+    public float Attack
     {
         get
         {
@@ -25,21 +27,42 @@ public class Stats
         }
     }
 
-    public int Defence
+    public float ShootRange
     {
         get
         {
-            var q = new Query(StatsType.Defence, baseStats.defence);
+            var q = new Query(StatsType.ShootRange, baseStats.shootRange);
             mediator.PerformerQuery(this, q);
             return q.Value;
         }
     }
-    
+
+    public float Speed
+    {
+        get
+        {
+            var q = new Query(StatsType.Speed, baseStats.speed);
+            mediator.PerformerQuery(this, q);
+            return q.Value;
+        }
+    }
+
+    public float ShootSpeed
+    {
+        get
+        {
+            var q = new Query(StatsType.ShootSpeed, baseStats.shootSpeed);
+            mediator.PerformerQuery(this, q);
+            return q.Value;
+        }
+    }
+
     public Stats(StatsMediator mediator, BaseStats baseStats)
     {
         this.mediator = mediator;
         this.baseStats = baseStats;
     }
 
-    public override string ToString() => $"Attack: {Attack}, Defence: {Defence}";
+    public override string ToString() =>
+        $"Attack: {Attack}, ShootRange: {ShootRange}, Speed: {Speed}, ShootSpeed: {ShootSpeed}";
 }

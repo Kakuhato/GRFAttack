@@ -6,5 +6,7 @@ using UnityEngine;
 public class BaseStats : ScriptableObject
 {
     public int attack = 10;
-    public int defence = 20;
+    public int shootRange = 5;
+    public int speed = 3;
+    public int shootSpeed = 2;
 }

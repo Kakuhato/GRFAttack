@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9eccee17ed1309f43b80845b5b5a592d, type: 3}
-  m_Name: HealthData
+  m_Name: HealthPatten
   m_EditorClassIdentifier: 
   redHeart: {fileID: 21300000, guid: 722ad9b02a2ca774ea823f9d122d14be, type: 3}
   soulHeart: {fileID: 21300000, guid: aedbd6a40311eb84282d2dba013473e1, type: 3}

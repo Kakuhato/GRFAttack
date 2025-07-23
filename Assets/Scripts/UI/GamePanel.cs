@@ -8,6 +8,8 @@ public class GamePanel : BasePanel
 {
     public Button pauseButton;
 
+    public HealthBar healthBar;
+
     protected override void Init()
     {
         base.Init();

@@ -194,6 +194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseButton: {fileID: 3373703394054366984}
+  healthBar: {fileID: 7832910417998415842}
 --- !u!1 &4235622773527577764
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,7 +253,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff0c11aad12353c4d929807c1facfcfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthData: {fileID: 11400000, guid: c0549d0fd4cb8f3478a646096bf47ee2, type: 2}
+  healthPatten: {fileID: 11400000, guid: c0549d0fd4cb8f3478a646096bf47ee2, type: 2}
 --- !u!114 &7162545244354204918
 MonoBehaviour:
   m_ObjectHideFlags: 0
