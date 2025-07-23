@@ -33,6 +33,16 @@ public class HealthBar : MonoBehaviour
         }
     }
 
+    public void RemoveHealth()
+    {
+        if (heartList.Count == 0) return;
+
+        GameObject heart = heartList.Last.Value;
+        heartList.RemoveLast();
+        Destroy(heart);
+    }
+
+
     // 删除多余的血量图标
     private void RemoveExtraHeart()
     {

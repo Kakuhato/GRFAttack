@@ -14,9 +14,6 @@ public class GameManager : RegulatorSingleton<GameManager>
     protected override void InitialSingleton()
     {
         base.InitialSingleton();
-        player = GameObject.Find("Doll");
-        initialRedHealth = player.GetComponent<Entity>().Health.currentRed;
-        initialSoulHealth = player.GetComponent<Entity>().Health.currentSoul;
     }
 
 
@@ -29,6 +26,9 @@ public class GameManager : RegulatorSingleton<GameManager>
     public void InitBattle()
     {
         UIManager.Instance.ShowPanel<GamePanel>();
+        player = GameObject.Find("Doll");
+        initialRedHealth = player.GetComponent<Entity>().Health.currentRed;
+        initialSoulHealth = player.GetComponent<Entity>().Health.currentSoul;
     }
 
     public void Move2Battle()
@@ -41,5 +41,9 @@ public class GameManager : RegulatorSingleton<GameManager>
     {
         // BeginScene有BeginMain入口，会调用一次InitGame()
         SceneManager.LoadScene("Scenes/BeginScene");
+    }
+
+    public void GameOver()
+    {
     }
 }

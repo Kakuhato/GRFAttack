@@ -12,6 +12,7 @@ public class Entity : MonoBehaviour, Ivisitable
     [SerializeField, InlineEditor, Required]
     private HealthData healthData;
 
+    // TODO: 换成公共函数获取初始生命
     public HealthData Health => healthData;
 
     public Stats Stats { get; private set; }
@@ -32,6 +33,16 @@ public class Entity : MonoBehaviour, Ivisitable
     public void Tick()
     {
         Stats.Mediator.Update(Time.deltaTime);
+    }
+
+    public bool GetHealed(HealthType healthType)
+    {
+        return this.healthData.AddHeart(healthType);
+    }
+
+    public bool GetDamaged()
+    {
+        return this.healthData.RemoveHeart();
     }
 
     public void Equip(IEquipable item)

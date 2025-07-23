@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 909b18eef1a049e3bb11880e82987bc8, type: 3}
-  m_Name: PlayerHealth
+  m_Script: {fileID: 188390376, guid: a4865f1ab4504ed8a368670db22f409c, type: 3}
+  m_Name: ImportSettingsConfig
   m_EditorClassIdentifier: 
-  redLimit: 6
-  currentRed: 6
-  currentSoul: 4
+  automateBeforeBuild: 1

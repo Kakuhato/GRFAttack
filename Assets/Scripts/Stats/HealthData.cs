@@ -35,4 +35,20 @@ public class HealthData : ScriptableObject
 
         return false;
     }
+
+    public bool RemoveHeart()
+    {
+        if (currentSoul > 0)
+        {
+            currentSoul--;
+            return true;
+        }
+        else if (currentRed > 0)
+        {
+            currentRed--;
+            return true;
+        }
+
+        return false;
+    }
 }

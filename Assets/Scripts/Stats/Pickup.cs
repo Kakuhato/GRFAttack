@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public abstract class Pickup : MonoBehaviour, IVisitor
 {
@@ -16,11 +17,20 @@ public abstract class Pickup : MonoBehaviour, IVisitor
         }
     }
 
+    // 之后改成实体后，Trigger需要修改
     public void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
             other.GetComponent<Ivisitable>()?.Accept(this);
+        }
+    }
+
+    public void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            other.gameObject.GetComponent<Ivisitable>()?.Accept(this);
         }
     }
 }

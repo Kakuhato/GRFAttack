@@ -33,6 +33,7 @@ public class PausePanel : BasePanel
 
         exitButton.onClick.AddListener(() =>
             {
+                GameDataManager.Instance.SaveMusicData();
                 UIManager.Instance.CloseAllPanels();
                 GameManager.Instance.Move2Begin();
 
