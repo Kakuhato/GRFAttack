@@ -10,11 +10,11 @@ public class PausePanel : BasePanel
 {
     public Button closeButton;
     public Button exitButton;
-    
-    
+
+
     public Toggle musicToggle;
     public Slider musicSlider;
-    
+
     public Toggle effectToggle;
     public Slider effectSlider;
 
@@ -22,66 +22,52 @@ public class PausePanel : BasePanel
     {
         base.Init();
         LoadSettins();
-        
-        closeButton.onClick.AddListener(
-            () =>
+
+        closeButton.onClick.AddListener(() =>
             {
                 GameDataManager.Instance.SaveMusicData();
                 UIManager.Instance.HidePanel<PausePanel>();
                 // UIManager.Instance.ShowPanel<BeginPanel>();
             }
         );
-        
-        exitButton.onClick.AddListener(
-            () =>
+
+        exitButton.onClick.AddListener(() =>
             {
-                UIManager.Instance.HidePanel<PausePanel>();
-                UIManager.Instance.HidePanel<GamePanel>();
-                
-                // TODO: 这一部分逻辑之后需要移入GameManager
-                SceneManager.LoadScene("Scenes/BeginScene");
-                
+                UIManager.Instance.CloseAllPanels();
+                GameManager.Instance.Move2Begin();
+
+
                 // BeginScene有Main入口，会自动打开一次主UI
                 // 之后改成gameManager之后这里需要统一逻辑
                 // UIManager.Instance.ShowPanel<BeginPanel>();
             }
         );
-        
-        musicToggle.onValueChanged.AddListener(
-            (isOn) =>
+
+        musicToggle.onValueChanged.AddListener((isOn) =>
             {
                 musicSlider.interactable = isOn;
                 AudioManager.Instance.SetBgmMute(!isOn);
             }
         );
-        
-        effectToggle.onValueChanged.AddListener(
-            (isOn) =>
+
+        effectToggle.onValueChanged.AddListener((isOn) =>
             {
                 effectSlider.interactable = isOn;
                 AudioManager.Instance.SetEffectMute(!isOn);
             }
         );
-        
-        musicSlider.onValueChanged.AddListener(
-            (value) =>
-            {
-                AudioManager.Instance.SetBgmVolume(value);
-            }
+
+        musicSlider.onValueChanged.AddListener((value) => { AudioManager.Instance.SetBgmVolume(value); }
         );
 
-        effectSlider.onValueChanged.AddListener(
-            (value) =>
-            {
-                AudioManager.Instance.SetEffectVolume(value);
-            });
+        effectSlider.onValueChanged.AddListener((value) => { AudioManager.Instance.SetEffectVolume(value); });
     }
 
     private void LoadSettins()
     {
         musicToggle.isOn = !AudioManager.Instance.IsBgmMute();
         musicSlider.value = AudioManager.Instance.GetBgmVolume();
-        
+
         effectToggle.isOn = !AudioManager.Instance.IsEffectMute();
         effectSlider.value = AudioManager.Instance.GetEffectVolume();
     }

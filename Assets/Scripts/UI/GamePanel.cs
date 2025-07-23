@@ -11,11 +11,7 @@ public class GamePanel : BasePanel
     protected override void Init()
     {
         base.Init();
-        pauseButton.onClick.AddListener(
-            () =>
-            {
-                UIManager.Instance.ShowPanel<PausePanel>();
-            }
+        pauseButton.onClick.AddListener(() => { UIManager.Instance.ShowPanel<PausePanel>(); }
         );
     }
 }

@@ -248,7 +248,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!58 &344300136
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -299,7 +299,7 @@ MonoBehaviour:
   type: 0
   operatorType: 1
   value: 10
-  duration: 5
+  duration: -4
 --- !u!212 &344300138
 SpriteRenderer:
   m_ObjectHideFlags: 0

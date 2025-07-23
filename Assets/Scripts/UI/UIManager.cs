@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -73,7 +74,17 @@ public class UIManager : RegulatorSingleton<UIManager>
         return null;
     }
     
-
+    public void CloseAllPanels()
+    {
+        List<BasePanel> panelsToClose = panels.Values.ToList(); // .ToList()为浅拷贝
+        foreach (var panel in panelsToClose)
+        {
+            panel.ClosePanel();
+        }
+        // 在打开面板时加上了关闭时自动移出字典的事件
+        // panels.Clear();
+    }
+    
     protected override void InitialSingleton()
     {
         base.InitialSingleton();

@@ -6,7 +6,9 @@ using Sirenix.OdinInspector;
 
 public class Entity : MonoBehaviour, Ivisitable
 {
-    [SerializeField, InlineEditor, Required] private BaseStats baseStats;
+    [SerializeField, InlineEditor, Required]
+    private BaseStats baseStats;
+
     public Stats Stats { get; private set; }
 
     private void Awake()
@@ -15,9 +17,9 @@ public class Entity : MonoBehaviour, Ivisitable
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
-
+        Tick();
     }
 
     public void Accept(IVisitor visitor) => visitor.Visit(this);
@@ -25,5 +27,30 @@ public class Entity : MonoBehaviour, Ivisitable
     public void Tick()
     {
         Stats.Mediator.Update(Time.deltaTime);
+    }
+
+    public void Equip(IEquipable item)
+    {
+        if (item == null) return;
+        Stats.Mediator.AddModifier(item.GetStatModifier());
+    }
+
+    public void Unequip(IEquipable item)
+    {
+        if (item == null) return;
+        item.GetStatModifier().Remove();
+    }
+}
+
+public interface IEquipable
+{
+    StatModifier GetStatModifier();
+}
+
+public class Sword : IEquipable
+{
+    public StatModifier GetStatModifier()
+    {
+        return new BasicStatModifier(StatsType.Attack, 0, v => v + 10);
     }
 }
