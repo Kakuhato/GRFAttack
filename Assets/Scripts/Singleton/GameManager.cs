@@ -27,8 +27,8 @@ public class GameManager : RegulatorSingleton<GameManager>
     {
         UIManager.Instance.ShowPanel<GamePanel>();
         player = GameObject.Find("Doll");
-        initialRedHealth = player.GetComponent<Entity>().Health.currentRed;
-        initialSoulHealth = player.GetComponent<Entity>().Health.currentSoul;
+        initialRedHealth = player.GetComponent<Entity>().Health.GetCurrentRed();
+        initialSoulHealth = player.GetComponent<Entity>().Health.GetCurrentSoul();
     }
 
     public void Move2Battle()

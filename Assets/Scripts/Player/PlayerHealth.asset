@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PlayerHealth
   m_EditorClassIdentifier: 
   redLimit: 6
-  currentRed: 6
-  currentSoul: 4
+  currentRed: 3
+  currentSoul: 5
