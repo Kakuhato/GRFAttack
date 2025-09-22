@@ -5,30 +5,25 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public Entity entity;
 
     public float atk = 10f;
     public int maxHp = 10;
     public int nowHp = 10;
 
-    public float moveSpeed = 10;
-    public float attackSpeed = 1;
-    public float bulletSpeed = 10;
-    public float attackRange = 2;
-    
     public Transform crosshair;
     public Transform weapon;
-    
+
     private Camera mainCamera;
     private FireController fireController;
-    private float horizontalMove;
-    
+
 
     // Start is called before the first frame update
     void Start()
     {
         mainCamera = Camera.main;
         fireController = weapon.GetComponent<FireController>();
-
+        entity = GetComponent<Entity>();
     }
 
     // Update is called once per frame
@@ -50,14 +45,14 @@ public class PlayerController : MonoBehaviour
     }
 
 
-
     public void Move()
     {
-        horizontalMove = Input.GetAxis("Horizontal");
-        this.transform.Translate( horizontalMove * moveSpeed * Time.deltaTime * Vector3.right);
-        this.transform.Translate(Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime * Vector3.up);
+        float horizontalMove = Input.GetAxis("Horizontal");
+        float verticalMove = Input.GetAxis("Vertical");
+        this.transform.Translate(horizontalMove * entity.Stats.Speed * Time.deltaTime * Vector3.right);
+        this.transform.Translate(verticalMove * entity.Stats.Speed * Time.deltaTime * Vector3.up);
     }
-    
+
     public float Target()
     {
         Vector3 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
@@ -69,9 +64,9 @@ public class PlayerController : MonoBehaviour
 
     public void Fire()
     {
-        fireController.Fire(this.transform.position, Target(), this.bulletSpeed, this.attackRange);
+        fireController.Fire(this.transform.position, Target(), entity.Stats.ShootSpeed, entity.Stats.ShootRange);
     }
-    
+
     public void TakeDamage(int damage)
     {
         this.nowHp -= damage;
@@ -80,7 +75,7 @@ public class PlayerController : MonoBehaviour
             Die();
         }
     }
-    
+
     public void Die()
     {
         Destroy(this.gameObject);
@@ -89,11 +84,11 @@ public class PlayerController : MonoBehaviour
     public void AOE()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(
-            this.transform.position, 
-            this.attackRange,
+            this.transform.position,
+            entity.Stats.ShootRange,
             1 << LayerMask.NameToLayer("Enemy")
-            );
-        if(colliders.Length > 0)
+        );
+        if (colliders.Length > 0)
         {
             print("?");
             foreach (var collider in colliders)
@@ -105,13 +100,14 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(this.transform.position, this.attackRange);
+        if (entity == null) return;
+        Gizmos.DrawWireSphere(this.transform.position, entity.Stats.ShootRange);
     }
-    
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Reward"))
@@ -121,7 +117,4 @@ public class PlayerController : MonoBehaviour
             fireController.AddWeapon(we);
         }
     }
-    
-    
-
 }

@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
   attack: 10
-  defence: 20
+  shootRange: 5
+  speed: 3
+  shootSpeed: 10
