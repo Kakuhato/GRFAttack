@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public Entity entity;
+    public AnimationController animanationController;
 
     public float atk = 10f;
     public int maxHp = 10;
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour
         mainCamera = Camera.main;
         fireController = weapon.GetComponent<FireController>();
         entity = GetComponent<Entity>();
+        animanationController = GetComponent<AnimationController>();
     }
 
     // Update is called once per frame
@@ -51,6 +53,8 @@ public class PlayerController : MonoBehaviour
         float verticalMove = Input.GetAxis("Vertical");
         this.transform.Translate(horizontalMove * entity.Stats.Speed * Time.deltaTime * Vector3.right);
         this.transform.Translate(verticalMove * entity.Stats.Speed * Time.deltaTime * Vector3.up);
+        if (horizontalMove != 0 || verticalMove != 0) animanationController.Walk(horizontalMove);
+        else animanationController.Idle();
     }
 
     public float Target()
@@ -101,12 +105,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        if (entity == null) return;
-        Gizmos.DrawWireSphere(this.transform.position, entity.Stats.ShootRange);
-    }
+    // private void OnDrawGizmos()
+    // {
+    //     Gizmos.color = Color.red;
+    //     if (entity == null) return;
+    //     Gizmos.DrawWireSphere(this.transform.position, entity.Stats.ShootRange);
+    // }
 
     void OnTriggerEnter2D(Collider2D other)
     {

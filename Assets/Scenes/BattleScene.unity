@@ -1909,13 +1909,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd7b8c3e083a29542a9b56f5c06d4cea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  entity: {fileID: 719683335}
+  animanationController: {fileID: 719683334}
   atk: 0
   maxHp: 10
   nowHp: 10
-  moveSpeed: 7
-  attackSpeed: 1
-  bulletSpeed: 10
-  attackRange: 2
   crosshair: {fileID: 804256893}
   weapon: {fileID: 1842475807}
 --- !u!70 &719683332
@@ -1993,8 +1991,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sa: {fileID: 1539134006}
-  walk: wait
+  walk: walk
   attack: attack
+  idle: wait
   boneName: target2
   slotName: 
   attachmentName: 
