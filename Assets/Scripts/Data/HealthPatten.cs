@@ -17,9 +17,6 @@ public class HealthPatten : ScriptableObject
     [SerializeField] private Sprite redHeart;
     [SerializeField] private Sprite soulHeart;
 
-    // TODO：需要移入角色属性统计
-    public int initialHealth;
-
     public GameObject CreateRed(GameObject heartPrefab, Transform parent)
     {
         GameObject heart = CreatHeart(heartPrefab, parent, this.redHeart);

@@ -6,10 +6,12 @@ using UnityEngine.Serialization;
 
 public class GameManager : RegulatorSingleton<GameManager>
 {
-    public GameObject player;
+    [SerializeField] private GameObject player;
 
     public int initialRedHealth;
     public int initialSoulHealth;
+
+    public Transform PlayerTransform => player.transform;
 
     protected override void InitialSingleton()
     {

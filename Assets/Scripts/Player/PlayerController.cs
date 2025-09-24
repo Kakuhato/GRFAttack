@@ -8,10 +8,6 @@ public class PlayerController : MonoBehaviour
     public Entity entity;
     public AnimationController animanationController;
 
-    public float atk = 10f;
-    public int maxHp = 10;
-    public int nowHp = 10;
-
     public Transform crosshair;
     public Transform weapon;
 
@@ -73,8 +69,7 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        this.nowHp -= damage;
-        if (this.nowHp <= 0)
+        if (this.entity.Health.RemoveHeart())
         {
             Die();
         }
@@ -104,13 +99,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
-    // private void OnDrawGizmos()
-    // {
-    //     Gizmos.color = Color.red;
-    //     if (entity == null) return;
-    //     Gizmos.DrawWireSphere(this.transform.position, entity.Stats.ShootRange);
-    // }
 
     void OnTriggerEnter2D(Collider2D other)
     {

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attack: 10
   shootRange: 5
-  speed: 3
+  speed: 5
   shootSpeed: 10
