@@ -673,8 +673,8 @@ MonoBehaviour:
   damage: 0
   debugMaterialOrange: {fileID: 2100000, guid: 9d0a10216eb74474281db2894459f05f, type: 2}
   debugMaterialGreen: {fileID: 2100000, guid: f61af6889731e0e41a0cab2973c481a3, type: 2}
-  debugMesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
-  debugMode: 1
+  debugMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  debugMode: 0
 --- !u!50 &344300141
 Rigidbody2D:
   serializedVersion: 4
