@@ -11,6 +11,13 @@ namespace Utils
         public Bullet bulletScript;
     }
 
+    public enum PoolType
+    {
+        None,
+        Bullet,
+        Enemy,
+    }
+
     public enum RoundPosition
     {
         Top,
@@ -18,7 +25,7 @@ namespace Utils
         Left,
         Right
     }
-    
+
     public static class Tool
     {
         private const float Offset = 1.5f;
@@ -41,10 +48,8 @@ namespace Utils
                     pos = new Vector3(Offset, 0, 0);
                     break;
             }
+
             return pos;
         }
     }
-    
-    
-
 }

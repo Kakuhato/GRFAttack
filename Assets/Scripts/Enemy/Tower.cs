@@ -11,12 +11,13 @@ public class Tower : EnemyBase
         // Move the enemy
         this.transform.Rotate(Vector3.forward, Time.deltaTime * this.moveSpeed, Space.Self);
     }
-    
+
     private bool IsPlayerInRange()
     {
-        return Vector3.Distance(GameController.Instance.GetPlayerPosition(), this.transform.position) < this.attackRange;
+        return Vector3.Distance(GameController.Instance.GetPlayerPosition(), this.transform.position) <
+               this.attackRange;
     }
-    
+
     private float RotateTowardsPlayer()
     {
         Vector2 direction = GameController.Instance.GetPlayerPosition() - transform.position;
@@ -33,15 +34,16 @@ public class Tower : EnemyBase
         if (this.attackCd >= this.attackSpeed)
         {
             // print("Attack");
-            for(int i = 0; i < 2; i++)
+            for (int i = 0; i < 2; i++)
             {
-                BulletData bullet = BulletsPool.Instance.GetBullet("EnemyBullet");
-                bullet.gameObject.transform.position = this.transform.TransformPoint(4f * (0.5f - i) * Vector3.up  );
-                bullet.gameObject.transform.rotation = Quaternion.Euler(0, 0, this.transform.eulerAngles.z + 90 + 180 * i);
-                bullet.bulletScript.SetSpeed(2f);
-                bullet.bulletScript.SetRange(this.attackRange);
-                bullet.gameObject.SetActive(true);
+                // BulletData bullet = BulletsPool.Instance.GetBullet("EnemyBullet");
+                // bullet.gameObject.transform.position = this.transform.TransformPoint(4f * (0.5f - i) * Vector3.up  );
+                // bullet.gameObject.transform.rotation = Quaternion.Euler(0, 0, this.transform.eulerAngles.z + 90 + 180 * i);
+                // bullet.bulletScript.SetSpeed(2f);
+                // bullet.bulletScript.SetRange(this.attackRange);
+                // bullet.gameObject.SetActive(true);
             }
+
             this.attackCd = 0;
         }
     }

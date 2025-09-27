@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
 
     private Camera mainCamera;
     private FireController fireController;
-
+    private float aimDirection;
 
     // Start is called before the first frame update
     void Start()
@@ -27,9 +27,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        aimDirection = Target();
         Move();
-        crosshair.rotation = Quaternion.Euler(0, 0, Target());
-        weapon.rotation = Quaternion.Euler(0, 0, Target());
+        crosshair.rotation = Quaternion.Euler(0, 0, aimDirection);
+        weapon.rotation = Quaternion.Euler(0, 0, aimDirection);
         if (Input.GetMouseButtonDown(0))
         {
             Fire();
@@ -40,6 +41,8 @@ public class PlayerController : MonoBehaviour
             print("!");
             AOE();
         }
+
+        fireController.DrawLines(new Vector3(entity.Stats.ShootRange, 0));
     }
 
 
@@ -64,7 +67,7 @@ public class PlayerController : MonoBehaviour
 
     public void Fire()
     {
-        fireController.Fire(this.transform.position, Target(), entity.Stats.ShootSpeed, entity.Stats.ShootRange);
+        fireController.Fire(this.transform.position, aimDirection, entity.Stats.ShootSpeed, entity.Stats.ShootRange);
     }
 
     public void TakeDamage(int damage)

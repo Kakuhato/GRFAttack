@@ -9,13 +9,17 @@ public class WeaponBase : MonoBehaviour
 {
     public bool isHold = false;
 
-    public virtual RoundPosition RP{get; set;}
-    
-    public virtual void SetHold() {}
-    
-    public virtual void ResetParent(Transform parent) {}
-    
-    public virtual void Fire(float direction, float speed, float range) {}
-    
-    
+    public virtual RoundPosition RP { get; set; }
+
+    public virtual void SetHold()
+    {
+    }
+
+    public virtual void ResetParent(Transform parent)
+    {
+    }
+
+    public virtual void Fire(float direction, float speed, float range)
+    {
+    }
 }

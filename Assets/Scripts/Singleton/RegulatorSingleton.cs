@@ -7,7 +7,7 @@ public class RegulatorSingleton<T> : MonoBehaviour where T : Component
 {
     protected static T instance;
 
-    public float InitialTime { get; private set;}
+    public float InitialTime { get; private set; }
 
     public static T Instance
     {
@@ -24,6 +24,7 @@ public class RegulatorSingleton<T> : MonoBehaviour where T : Component
                     instance = obj.AddComponent<T>();
                 }
             }
+
             return instance;
         }
     }
@@ -32,21 +33,21 @@ public class RegulatorSingleton<T> : MonoBehaviour where T : Component
     {
         InitialSingleton();
     }
-    
+
     protected virtual void InitialSingleton()
     {
         // if(!Application.isPlaying) return;
-        
+
         InitialTime = Time.time;
         DontDestroyOnLoad(this.gameObject);
 
         T[] oldInstances = FindObjectsByType<T>(FindObjectsSortMode.None);
         foreach (T old in oldInstances)
         {
-            if(old.GetComponent<RegulatorSingleton<T>>().InitialTime < this.InitialTime)
+            if (old.GetComponent<RegulatorSingleton<T>>().InitialTime < this.InitialTime)
             {
                 Destroy(old.gameObject);
-                // TODO: 单独写一个销毁函数，释放上一个实例中的内容
+                // TODO: 单独写一个销毁函数，释放上一个实例中的内容（比如字典，数组等）
             }
         }
 
@@ -56,4 +57,3 @@ public class RegulatorSingleton<T> : MonoBehaviour where T : Component
         }
     }
 }
-

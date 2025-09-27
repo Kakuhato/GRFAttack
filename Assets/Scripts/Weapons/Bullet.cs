@@ -1,17 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Vector3 = System.Numerics.Vector3;
 
-public class Bullet : MonoBehaviour
+public class Bullet : Poolable
 {
-    
     public Rigidbody2D rb;
-    private float speed = 1;
-    private float range = 10;
-    
+    [SerializeField] private float speed = 1;
+    [SerializeField] private float range = 10;
+
     private Vector2 direction;
-    
+
+
     void OnEnable()
     {
         if (rb != null)
@@ -19,24 +21,36 @@ public class Bullet : MonoBehaviour
             rb.velocity = transform.right * speed;
             direction = rb.velocity.normalized;
         }
+
         StartCoroutine(MyCoroutine(range / speed));
     }
-    
+
+
     public void SetSpeed(float s)
     {
         this.speed = s;
     }
-    
+
     public void SetRange(float r)
     {
         this.range = r;
     }
-    
+
+    public void SetDirection(float angle)
+    {
+        transform.rotation = Quaternion.Euler(0, 0, angle);
+        if (rb != null)
+        {
+            rb.velocity = transform.right * speed;
+            direction = rb.velocity.normalized;
+        }
+    }
+
     public Vector2 GetDirection()
     {
         return direction;
     }
-    
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if ((other.CompareTag("Enemy") && this.gameObject.CompareTag("PlayerBullet")) ||
@@ -45,13 +59,10 @@ public class Bullet : MonoBehaviour
             this.gameObject.SetActive(false);
         }
     }
-    
+
     IEnumerator MyCoroutine(float seconds)
     {
         yield return new WaitForSeconds(seconds);
-        this.gameObject.SetActive(false);
+        Dispose();
     }
-    
-    
-    
 }
