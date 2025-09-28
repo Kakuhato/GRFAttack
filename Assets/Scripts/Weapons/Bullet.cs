@@ -22,6 +22,7 @@ public class Bullet : Poolable
             direction = rb.velocity.normalized;
         }
 
+        isDisposed = false;
         StartCoroutine(MyCoroutine(range / speed));
     }
 
@@ -54,9 +55,11 @@ public class Bullet : Poolable
     void OnTriggerEnter2D(Collider2D other)
     {
         if ((other.CompareTag("Enemy") && this.gameObject.CompareTag("PlayerBullet")) ||
-            (other.CompareTag("Player") && this.gameObject.CompareTag("EnemyBullet")))
+            (other.CompareTag("Player") && this.gameObject.CompareTag("EnemyBullet")) ||
+            other.CompareTag("ForeGround")
+           )
         {
-            this.gameObject.SetActive(false);
+            Dispose();
         }
     }
 

@@ -9,6 +9,9 @@ public class Chaser : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float damage;
+    [SerializeField] private float dragRation;
+
+    private bool isKnockback = false;
 
     [SerializeField] private Material debugMaterialOrange;
     [SerializeField] private Material debugMaterialGreen;
@@ -51,7 +54,21 @@ public class Chaser : MonoBehaviour
 
     private void FixedUpdate()
     {
-        PhysicChase();
+        if (!isKnockback)
+        {
+            PhysicChase();
+        }
+        else
+        {
+            if (rb.velocity.magnitude < 1.5f)
+            {
+                isKnockback = false;
+            }
+            else
+            {
+                Drag();
+            }
+        }
     }
 
     void PhysicChase()
@@ -72,13 +89,13 @@ public class Chaser : MonoBehaviour
         lastPosition = rb.position;
 
         // TODO: 这里的卡死检测有问题，先默认不卡死，实际有卡死再进行修改
-        if (distanceTraveled < Time.fixedDeltaTime * -1)
+        if (distanceTraveled < Time.fixedDeltaTime)
         {
             if (stuckTime < 0) stuckTime = Time.time;
 
-            if (Time.time - stuckTime > 1f)
+            if (Time.time - stuckTime > 0.3f)
             {
-                Vector2 randomCircle = Random.insideUnitCircle.normalized * 4;
+                Vector2 randomCircle = Random.insideUnitCircle.normalized * 1.5f;
                 Vector3 getOutPosition = rb.position + randomCircle;
                 getOutPosition = new Vector3(getOutPosition.x, getOutPosition.y, 0);
 
@@ -87,6 +104,7 @@ public class Chaser : MonoBehaviour
                     if (!getOutPointExist)
                     {
                         wayPoints.Insert(0, getOutPosition);
+
                         getOutPointExist = true;
                     }
                     else
@@ -120,7 +138,7 @@ public class Chaser : MonoBehaviour
             wayPoints.Add(TargetPosition);
         }
 
-        if (wayPoints.Count() > 10) wayPoints.Clear();
+        if (wayPoints.Count() > 25) wayPoints.Clear();
 
         if (wayPoints.Count == 0) return;
 
@@ -136,10 +154,17 @@ public class Chaser : MonoBehaviour
     {
         if (other.CompareTag("PlayerBullet"))
         {
+            isKnockback = true;
             Vector2 direction = other.GetComponent<Bullet>().GetDirection();
-            this.transform.position += new Vector3(direction.x, direction.y, 0) * 0.5f;
-            // base.GetDamage(1f);
+            rb.AddForce(direction * 10f, ForceMode2D.Impulse);
         }
+    }
+
+    private void Drag()
+    {
+        Vector2 v = rb.velocity;
+
+        rb.AddForce(-dragRation * rb.mass * v);
     }
 
     private void DrawDebug()
@@ -153,6 +178,7 @@ public class Chaser : MonoBehaviour
             debugLineMaterialGreen.color = new Color(debugLineMaterialGreen.color.r, debugLineMaterialGreen.color.g,
                 debugLineMaterialGreen.color.b, 0.2f);
             debugLine = this.gameObject.AddComponent<LineRenderer>();
+            debugLine.sortingLayerName = "Entity";
             debugLine.material = debugLineMaterialOrange;
             debugLine.startWidth = debugLine.endWidth = 0.3f;
         }

@@ -15,9 +15,9 @@ public class PoolManager : RegulatorSingleton<PoolManager>
     {
         base.InitialSingleton();
         bulletPool = new GameObject("BulletPool");
-        bulletPool.transform.parent = this.transform;
+        // bulletPool.transform.parent = this.transform;
         enemyPool = new GameObject("EnemyPool");
-        enemyPool.transform.parent = this.transform;
+        // enemyPool.transform.parent = this.transform;
     }
 
     public GameObject SpawnObject(

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -11,9 +12,16 @@ public class PlayerController : MonoBehaviour
     public Transform crosshair;
     public Transform weapon;
 
+    [SerializeField] Rigidbody2D rb;
+
     private Camera mainCamera;
     private FireController fireController;
     private float aimDirection;
+
+    private float horizontalMove;
+    private float verticalMove;
+
+    private Vector2 moveIput;
 
     // Start is called before the first frame update
     void Start()
@@ -22,13 +30,19 @@ public class PlayerController : MonoBehaviour
         fireController = weapon.GetComponent<FireController>();
         entity = GetComponent<Entity>();
         animanationController = GetComponent<AnimationController>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        horizontalMove = Input.GetAxisRaw("Horizontal");
+        verticalMove = Input.GetAxisRaw("Vertical");
+        moveIput.x = horizontalMove;
+        moveIput.y = verticalMove;
+
         aimDirection = Target();
-        Move();
+
         crosshair.rotation = Quaternion.Euler(0, 0, aimDirection);
         weapon.rotation = Quaternion.Euler(0, 0, aimDirection);
         if (Input.GetMouseButtonDown(0))
@@ -45,14 +59,20 @@ public class PlayerController : MonoBehaviour
         fireController.DrawLines(new Vector3(entity.Stats.ShootRange, 0));
     }
 
+    private void FixedUpdate()
+    {
+        Move();
+    }
+
 
     public void Move()
     {
-        float horizontalMove = Input.GetAxis("Horizontal");
-        float verticalMove = Input.GetAxis("Vertical");
-        this.transform.Translate(horizontalMove * entity.Stats.Speed * Time.deltaTime * Vector3.right);
-        this.transform.Translate(verticalMove * entity.Stats.Speed * Time.deltaTime * Vector3.up);
-        if (horizontalMove != 0 || verticalMove != 0) animanationController.Walk(horizontalMove);
+        // this.transform.Translate(horizontalMove * entity.Stats.Speed * Time.deltaTime * Vector3.right);
+        // this.transform.Translate(verticalMove * entity.Stats.Speed * Time.deltaTime * Vector3.up);
+        rb.velocity = entity.Stats.Speed * moveIput.normalized;
+        // rb.MovePosition(rb.position + entity.Stats.Speed * Time.fixedDeltaTime * moveIput.normalized);
+        if (moveIput.magnitude > 0) animanationController.Walk(horizontalMove);
+        // if (horizontalMove != 0 || verticalMove != 0) animanationController.Walk(horizontalMove);
         else animanationController.Idle();
     }
 
