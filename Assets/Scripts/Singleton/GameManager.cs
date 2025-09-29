@@ -13,6 +13,8 @@ public class GameManager : RegulatorSingleton<GameManager>
 
     public Transform PlayerTransform => player.transform;
 
+    public int Score { private set; get; }
+
     protected override void InitialSingleton()
     {
         base.InitialSingleton();
@@ -27,10 +29,14 @@ public class GameManager : RegulatorSingleton<GameManager>
 
     public void InitBattle()
     {
+        AudioManager.Instance.PlayBackGroundMusic("Audio/SinOfFire");
+        Score = 0;
         UIManager.Instance.ShowPanel<GamePanel>();
+        AddScore(0);
         player = GameObject.Find("Doll");
         initialRedHealth = player.GetComponent<Entity>().Health.GetCurrentRed();
         initialSoulHealth = player.GetComponent<Entity>().Health.GetCurrentSoul();
+        EnemySpawner.Instance.StartSpawning();
     }
 
     public void Move2Battle()
@@ -42,10 +48,22 @@ public class GameManager : RegulatorSingleton<GameManager>
     public void Move2Begin()
     {
         // BeginScene有BeginMain入口，会调用一次InitGame()
+        Time.timeScale = 1; // TODO: 改暂停机制
+        EnemySpawner.Instance.StopSpawning();
         SceneManager.LoadScene("Scenes/BeginScene");
     }
 
     public void GameOver()
     {
+        Time.timeScale = 0; // TODO: 改暂停机制
+        EnemySpawner.Instance.StopSpawning();
+        UIManager.Instance.CloseAllPanels();
+        UIManager.Instance.ShowPanel<GameOverPanel>();
+    }
+
+    public void AddScore(int delta)
+    {
+        Score += delta;
+        UIManager.Instance.GetPanel<GamePanel>()?.updateScore(Score);
     }
 }

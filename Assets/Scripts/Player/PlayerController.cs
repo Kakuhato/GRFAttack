@@ -92,15 +92,25 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (this.entity.Health.RemoveHeart())
+        if (!this.entity.Health.RemoveHeart())
         {
             Die();
+        }
+        else
+        {
+            #region Temeporary code! Needs modification
+
+            // 临时写法！ 需要修改
+            GamePanel gamePanel = UIManager.Instance.GetPanel<GamePanel>();
+            gamePanel.healthBar.RemoveHealth();
+
+            #endregion
         }
     }
 
     public void Die()
     {
-        Destroy(this.gameObject);
+        GameManager.Instance.GameOver();
     }
 
     public void AOE()

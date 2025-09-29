@@ -22,9 +22,12 @@ public class PausePanel : BasePanel
     {
         base.Init();
         LoadSettins();
+        Time.timeScale = 0f;
 
         closeButton.onClick.AddListener(() =>
             {
+                Time.timeScale = 1f;
+
                 GameDataManager.Instance.SaveMusicData();
                 UIManager.Instance.HidePanel<PausePanel>();
                 // UIManager.Instance.ShowPanel<BeginPanel>();
@@ -36,6 +39,8 @@ public class PausePanel : BasePanel
                 GameDataManager.Instance.SaveMusicData();
                 UIManager.Instance.CloseAllPanels();
                 GameManager.Instance.Move2Begin();
+
+                Time.timeScale = 1f;
 
 
                 // BeginScene有Main入口，会自动打开一次主UI

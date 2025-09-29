@@ -68,7 +68,7 @@ public class AudioManager : RegulatorSingleton<AudioManager>
             return;
         }
 
-        if (bgmSource.isPlaying)
+        if (bgmSource.clip == clip && bgmSource.isPlaying)
         {
             return;
         }

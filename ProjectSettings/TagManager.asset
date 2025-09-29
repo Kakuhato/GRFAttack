@@ -9,6 +9,7 @@ TagManager:
   - Reward
   - EnemyBullet
   - ForeGround
+  - SpawnGround
   layers:
   - Default
   - TransparentFX

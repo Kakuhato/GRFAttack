@@ -14,15 +14,15 @@ public class Bullet : Poolable
     private Vector2 direction;
 
 
-    void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         if (rb != null)
         {
             rb.velocity = transform.right * speed;
             direction = rb.velocity.normalized;
         }
 
-        isDisposed = false;
         StartCoroutine(MyCoroutine(range / speed));
     }
 

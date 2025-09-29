@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,7 @@ public class PoolManager : RegulatorSingleton<PoolManager>
     public GameObject SpawnObject(
         GameObject prefab,
         Vector3 position,
+        List<Action<Poolable>> onDespawn,
         PoolType type = PoolType.None
     )
     {
@@ -55,7 +57,13 @@ public class PoolManager : RegulatorSingleton<PoolManager>
             GameObject parentPool = GetParentPool(type);
             spawnedObject = Instantiate(prefab, position, Quaternion.identity);
             spawnedObject.SetActive(false);
-            spawnedObject.GetComponent<Poolable>().OnDispose += DespawnObject;
+            Poolable poolable = spawnedObject.GetComponent<Poolable>();
+            poolable.OnDispose += DespawnObject;
+            foreach (var func in onDespawn)
+            {
+                poolable.OnDispose += func;
+            }
+
             if (parentPool != null)
                 spawnedObject.transform.parent = parentPool.transform;
         }
@@ -70,19 +78,30 @@ public class PoolManager : RegulatorSingleton<PoolManager>
         return spawnedObject;
     }
 
-    public void DespawnObject(GameObject obj)
+    public GameObject SpawnObject(
+        GameObject prefab,
+        Vector3 position,
+        PoolType type = PoolType.None
+    )
+    {
+        return SpawnObject(prefab, position, new List<Action<Poolable>>(), type);
+    }
+
+
+    public void DespawnObject(Poolable obj)
     {
         // 这里返回的是场景上的对象，而非脚本，因此会带有(Clone)
-        PooledObjectInfo pool = objectPools.Find(p => p.PoolName == obj.name.Replace("(Clone)", "").Trim());
+        PooledObjectInfo pool = objectPools.Find(p => p.PoolName == obj.gameObject.name.Replace("(Clone)", "").Trim());
 
         if (pool == null)
         {
-            Debug.LogWarning("Trying to despawn an object that was not spawned from the pool: " + obj.name);
+            Debug.LogWarning("Trying to despawn an object that was not spawned from the pool: " + obj.gameObject.name);
         }
         else
         {
-            obj.SetActive(false);
-            pool.PooledObjects.Add(obj);
+            obj.gameObject.SetActive(false);
+            // print("despawned: " + obj.name);
+            pool.PooledObjects.Add(obj.gameObject);
         }
     }
 

@@ -5,14 +5,19 @@ using UnityEngine;
 
 public class Poolable : MonoBehaviour
 {
-    public event Action<GameObject> OnDispose = delegate { };
+    public event Action<Poolable> OnDispose = delegate { };
 
-    protected bool isDisposed = true;
+    protected bool IsDisposed = false;
+
+    protected virtual void OnEnable()
+    {
+        IsDisposed = false;
+    }
 
     public void Dispose()
     {
-        if (isDisposed) return;
-        isDisposed = true;
-        OnDispose.Invoke(this.gameObject);
+        if (IsDisposed) return;
+        IsDisposed = true;
+        OnDispose.Invoke(this);
     }
 }

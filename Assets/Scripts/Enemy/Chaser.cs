@@ -5,8 +5,10 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Chaser : MonoBehaviour
+public class Chaser : Poolable
 {
+    [SerializeField] private EnemyAnimation enemyAnimation;
+
     [SerializeField] private float speed;
     [SerializeField] private float damage;
     [SerializeField] private float dragRation;
@@ -33,7 +35,6 @@ public class Chaser : MonoBehaviour
     private float originalDrag;
 
     private int foregroundLayerMask;
-    private int playerLayer;
     private bool getOutPointExist = false;
 
     private float stuckTime = -1; // TODO: 换成计时器
@@ -41,7 +42,6 @@ public class Chaser : MonoBehaviour
     void Start()
     {
         foregroundLayerMask = LayerMask.GetMask("Foreground");
-        playerLayer = LayerMask.NameToLayer("Player");
         rb = GetComponent<Rigidbody2D>();
         originalDrag = rb.drag;
     }
@@ -76,19 +76,21 @@ public class Chaser : MonoBehaviour
         if (wayPoints.Count() == 0)
         {
             rb.drag = 1f;
+            enemyAnimation.Idle();
             return;
         }
         else
         {
+            enemyAnimation.Walk();
             rb.drag = originalDrag;
         }
 
         rb.velocity = (wayPoints[0] - this.transform.position).normalized * speed;
+        enemyAnimation.ChangeDirection(-rb.velocity);
 
         float distanceTraveled = Vector2.Distance(lastPosition, rb.position);
         lastPosition = rb.position;
 
-        // TODO: 这里的卡死检测有问题，先默认不卡死，实际有卡死再进行修改
         if (distanceTraveled < Time.fixedDeltaTime)
         {
             if (stuckTime < 0) stuckTime = Time.time;
@@ -138,7 +140,7 @@ public class Chaser : MonoBehaviour
             wayPoints.Add(TargetPosition);
         }
 
-        if (wayPoints.Count() > 25) wayPoints.Clear();
+        if (wayPoints.Count() > 80) wayPoints.Clear();
 
         if (wayPoints.Count == 0) return;
 
@@ -154,9 +156,17 @@ public class Chaser : MonoBehaviour
     {
         if (other.CompareTag("PlayerBullet"))
         {
-            isKnockback = true;
-            Vector2 direction = other.GetComponent<Bullet>().GetDirection();
-            rb.AddForce(direction * 10f, ForceMode2D.Impulse);
+            wayPoints.Clear();
+            Dispose();
+            // isKnockback = true;
+            // Vector2 direction = other.GetComponent<Bullet>().GetDirection();
+            // rb.AddForce(direction * 10f, ForceMode2D.Impulse);
+        }
+        else if (other.CompareTag("Player"))
+        {
+            wayPoints.Clear();
+            other.GetComponent<PlayerController>().TakeDamage(1);
+            Dispose();
         }
     }
 

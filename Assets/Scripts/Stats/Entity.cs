@@ -36,28 +36,28 @@ public class Entity : MonoBehaviour, Ivisitable
         Stats.Mediator.Update(Time.deltaTime);
     }
 
-    public void Equip(IEquipable item)
-    {
-        if (item == null) return;
-        Stats.Mediator.AddModifier(item.GetStatModifier());
-    }
-
-    public void Unequip(IEquipable item)
-    {
-        if (item == null) return;
-        item.GetStatModifier().Remove();
-    }
+    // public void Equip(IEquipable item)
+    // {
+    //     if (item == null) return;
+    //     Stats.Mediator.AddModifier(item.GetStatModifier());
+    // }
+    //
+    // public void Unequip(IEquipable item)
+    // {
+    //     if (item == null) return;
+    //     item.GetStatModifier().Remove();
+    // }
 }
 
-public interface IEquipable
-{
-    StatModifier GetStatModifier();
-}
-
-public class Sword : IEquipable
-{
-    public StatModifier GetStatModifier()
-    {
-        return new BasicStatModifier(StatsType.Attack, 0, v => v + 10);
-    }
-}
+// public interface IEquipable
+// {
+//     StatModifier GetStatModifier();
+// }
+//
+// public class Sword : IEquipable
+// {
+//     public StatModifier GetStatModifier()
+//     {
+//         return new BasicStatModifier(StatsType.Attack, 0, v => v + 10);
+//     }
+// }

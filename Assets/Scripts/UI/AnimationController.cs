@@ -7,14 +7,10 @@ using UnityEngine;
 public class AnimationController : MonoBehaviour
 {
     public SkeletonAnimation sa;
-    private Rigidbody2D rb;
 
     [SpineAnimation] public string walk;
-    [SpineAnimation] public string attack;
     [SpineAnimation] public string idle;
     [SpineBone] public string boneName;
-    [SpineSlot] public string slotName;
-    [SpineAttachment] public string attachmentName;
 
     private Vector2 mousePos;
     private Camera mainCamera;
@@ -27,7 +23,7 @@ public class AnimationController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        sa.state.SetAnimation(0, walk, true);
+        // sa.state.SetAnimation(0, walk, true);
         mainCamera = Camera.main;
         cross = sa.Skeleton.FindBone(boneName);
         currentEntry = sa.AnimationState.SetAnimation(0, idle, true);
@@ -70,7 +66,8 @@ public class AnimationController : MonoBehaviour
 
     public void Walk(float direction)
     {
-        if (currentEntry.Animation.Name == walk && direction * lastDirection >= 0 && lastScaleX * sa.Skeleton.ScaleX >= 0) return;
+        if (currentEntry.Animation.Name == walk && direction * lastDirection >= 0 &&
+            lastScaleX * sa.Skeleton.ScaleX >= 0) return;
         lastDirection = direction >= 0 ? 1f : -1f;
         lastScaleX = sa.Skeleton.ScaleX;
         currentEntry = sa.AnimationState.SetAnimation(0, walk, true);
