@@ -63,20 +63,17 @@ public class EnemySpawner : RegulatorSingleton<EnemySpawner>
                         LayerMask.GetMask("Foreground")))
                 {
                     GameObject enemy = PoolManager.Instance.SpawnObject(prefab, randomPosition,
-                        new List<Action<Poolable>>
+                        (_) =>
                         {
-                            (_) =>
-                            {
-                                currentEnemies--;
-                                TrySpawnEnemy();
-                                print("spanw1");
-                                TrySpawnEnemy();
-                                print("spanw2");
-                                GameManager.Instance.AddScore(1);
-                            }
-                        }, PoolType.Enemy);
+                            currentEnemies--;
+                            TrySpawnEnemy();
+                            TrySpawnEnemy();
+                            EventBus<ScoreEvent>.Raise(new ScoreEvent
+                                { ScoreGained = prefab.GetComponent<Chaser>().GetHealthInfo()[0] });
+                        }
+                        , PoolType.Enemy);
                     enemy.SetActive(true);
-                    print("spanworiginal");
+                    // print("spanworiginal");
                     currentEnemies++;
                     return;
                 }
@@ -96,7 +93,7 @@ public class EnemySpawner : RegulatorSingleton<EnemySpawner>
             Debug.LogError("SpawnGround or ForeGround Tilemap not found!");
         }
 
-        prefab = Resources.Load<GameObject>("Prefabs/Enemy");
+        prefab = Resources.Load<GameObject>("Prefabs/Chaser");
         if (prefab == null)
         {
             Debug.LogError("Enemy prefab not found in Resources/Prefabs!");

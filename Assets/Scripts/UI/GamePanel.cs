@@ -13,6 +13,7 @@ public class GamePanel : BasePanel
 
     public TextMeshProUGUI scoreText;
 
+
     protected override void Init()
     {
         base.Init();
@@ -20,8 +21,8 @@ public class GamePanel : BasePanel
         );
     }
 
-    public void updateScore(int score)
+    public override void UpdatePanelData(int data)
     {
-        scoreText.text = "Score: " + score;
+        scoreText.text = "Score: " + data;
     }
 }

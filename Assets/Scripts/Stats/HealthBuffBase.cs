@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class HealthPickup : Pickup
+public class HealthBuffBase : BuffBase
 {
     // TODO: 根据healthAmount循环多次扣血
     [SerializeField] private int healthAmount = 1;

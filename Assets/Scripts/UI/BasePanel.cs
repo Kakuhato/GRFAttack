@@ -8,9 +8,9 @@ public class BasePanel : MonoBehaviour
 {
     protected bool isOpen;
     protected string PanelName;
-    
+
     protected CanvasGroup canvasGroup;
-    
+
     public event Action<string> OnOpenPanel = delegate { };
     public event Action<string> OnClosePanel = delegate { };
 
@@ -21,16 +21,15 @@ public class BasePanel : MonoBehaviour
         {
             this.canvasGroup = gameObject.AddComponent<CanvasGroup>();
         }
-        
+
         canvasGroup.alpha = 0f;
         this.isOpen = false;
-        
+
         Init();
     }
 
     protected virtual void Init()
     {
-        
     }
 
     public virtual void OpenPanel()
@@ -48,6 +47,7 @@ public class BasePanel : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    
-
+    public virtual void UpdatePanelData(int data)
+    {
+    }
 }

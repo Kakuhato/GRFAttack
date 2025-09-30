@@ -5,13 +5,15 @@ using UnityEngine;
 using UnityEngine.Events;
 using Vector3 = System.Numerics.Vector3;
 
-public class Bullet : Poolable
+public class Bullet : PoolableObject, IVisitor
 {
     public Rigidbody2D rb;
     [SerializeField] private float speed = 1;
     [SerializeField] private float range = 10;
+    [SerializeField] private float damage = 1.5f;
 
     private Vector2 direction;
+    private IVisitor iVisitorImplementation;
 
 
     protected override void OnEnable()
@@ -59,6 +61,7 @@ public class Bullet : Poolable
             other.CompareTag("ForeGround")
            )
         {
+            other.GetComponent<IVisitable>()?.Accept(this);
             Dispose();
         }
     }
@@ -67,5 +70,14 @@ public class Bullet : Poolable
     {
         yield return new WaitForSeconds(seconds);
         Dispose();
+    }
+
+    public void Visit<T>(T visitable) where T : Component, IVisitable
+    {
+        if (visitable is Entity entity)
+        {
+            // TODO: 冲击力需要注入
+            entity.TakeDamage(damage, rb.velocity.normalized * 15f);
+        }
     }
 }

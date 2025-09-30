@@ -155,6 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85fc3e73e632d034f90f463f4e63fc89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseStats: {fileID: 0}
   enemyAnimation: {fileID: 0}
   speed: 3
   damage: 0
@@ -10349,6 +10350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85fc3e73e632d034f90f463f4e63fc89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseStats: {fileID: 0}
   enemyAnimation: {fileID: 0}
   speed: 3
   damage: 0
@@ -11115,6 +11117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85fc3e73e632d034f90f463f4e63fc89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseStats: {fileID: 0}
   enemyAnimation: {fileID: 0}
   speed: 3
   damage: 0
@@ -20948,6 +20951,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85fc3e73e632d034f90f463f4e63fc89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseStats: {fileID: 0}
   enemyAnimation: {fileID: 0}
   speed: 3
   damage: 0
@@ -21117,6 +21121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85fc3e73e632d034f90f463f4e63fc89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseStats: {fileID: 0}
   enemyAnimation: {fileID: 0}
   speed: 3
   damage: 0
@@ -49303,6 +49308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85fc3e73e632d034f90f463f4e63fc89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseStats: {fileID: 0}
   enemyAnimation: {fileID: 0}
   speed: 3
   damage: 0
@@ -58731,6 +58737,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85fc3e73e632d034f90f463f4e63fc89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseStats: {fileID: 0}
   enemyAnimation: {fileID: 0}
   speed: 3
   damage: 0
@@ -58900,6 +58907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85fc3e73e632d034f90f463f4e63fc89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseStats: {fileID: 0}
   enemyAnimation: {fileID: 0}
   speed: 3
   damage: 0
@@ -59190,6 +59198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85fc3e73e632d034f90f463f4e63fc89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseStats: {fileID: 0}
   enemyAnimation: {fileID: 0}
   speed: 3
   damage: 0
@@ -59488,6 +59497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85fc3e73e632d034f90f463f4e63fc89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseStats: {fileID: 0}
   enemyAnimation: {fileID: 0}
   speed: 0
   damage: 0

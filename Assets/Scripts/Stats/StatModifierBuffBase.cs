@@ -7,7 +7,7 @@ public enum OperatorType
     Multiply
 }
 
-public class StatModifierPickup : Pickup
+public class StatModifierBuffBase : BuffBase
 {
     [SerializeField] private StatsType type = StatsType.Attack;
     [SerializeField] private OperatorType operatorType = OperatorType.Add;

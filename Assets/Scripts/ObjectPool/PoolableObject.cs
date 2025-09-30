@@ -3,11 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Poolable : MonoBehaviour
+public class PoolableObject : MonoBehaviour, IPoolable
 {
-    public event Action<Poolable> OnDispose = delegate { };
-
-    protected bool IsDisposed = false;
+    public event Action<IPoolable> OnDispose = delegate { };
+    private bool IsDisposed = false;
 
     protected virtual void OnEnable()
     {

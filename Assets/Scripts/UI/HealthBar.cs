@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
@@ -11,6 +12,7 @@ public class HealthBar : MonoBehaviour
 
     private GameObject heartItem;
     private LinkedList<GameObject> heartList = new LinkedList<GameObject>();
+    private EventBinding<HealthEvent> healthEventBinding;
 
 
     private int HealthLimit = 10;
@@ -31,6 +33,17 @@ public class HealthBar : MonoBehaviour
             GameObject heart = healthPatten.CreateSoul(heartItem, transform);
             heartList.AddLast(heart);
         }
+    }
+
+    private void OnEnable()
+    {
+        healthEventBinding = new EventBinding<HealthEvent>(RemoveHealth);
+        EventBus<HealthEvent>.Register(healthEventBinding);
+    }
+
+    private void OnDisable()
+    {
+        EventBus<HealthEvent>.Unregister(healthEventBinding);
     }
 
     public void RemoveHealth()
@@ -64,8 +77,8 @@ public class HealthBar : MonoBehaviour
             return;
         }
 
-        int redCount = GameManager.Instance.initialRedHealth;
-        int soulCount = GameManager.Instance.initialSoulHealth;
+        int redCount = GameManager.Instance.playerHealthInfo[0];
+        int soulCount = GameManager.Instance.playerHealthInfo[1];
 
         heartItem = Resources.Load<GameObject>("UI/Heart");
         for (int i = 0; i < redCount; i++)

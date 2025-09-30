@@ -2,10 +2,10 @@
 
 public interface IVisitor
 {
-    void Visit<T>(T visitable) where T :  Component,Ivisitable;
+    void Visit<T>(T visitable) where T : Component, IVisitable;
 }
 
-public interface Ivisitable
+public interface IVisitable
 {
     void Accept(IVisitor visitor);
 }

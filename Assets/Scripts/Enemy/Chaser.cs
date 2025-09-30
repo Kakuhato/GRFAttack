@@ -2,15 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Chaser : Poolable
+public class Chaser : Entity, IVisitor
 {
+    [SerializeField] private IPoolable poolable;
     [SerializeField] private EnemyAnimation enemyAnimation;
 
-    [SerializeField] private float speed;
-    [SerializeField] private float damage;
     [SerializeField] private float dragRation;
 
     private bool isKnockback = false;
@@ -27,7 +27,8 @@ public class Chaser : Poolable
     private List<Vector3> wayPoints = new List<Vector3>();
 
     private Transform target;
-    private float health;
+    private float originHelth = 2f;
+    private float curhealth = 2f;
     private Vector3 lastPosition;
 
 
@@ -39,6 +40,12 @@ public class Chaser : Poolable
 
     private float stuckTime = -1; // TODO: 换成计时器
 
+    protected override void Awake()
+    {
+        base.Awake();
+        poolable = GetComponent<IPoolable>();
+    }
+
     void Start()
     {
         foregroundLayerMask = LayerMask.GetMask("Foreground");
@@ -46,8 +53,9 @@ public class Chaser : Poolable
         originalDrag = rb.drag;
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         if (debugMode) DrawDebug();
         Chase();
     }
@@ -85,8 +93,15 @@ public class Chaser : Poolable
             rb.drag = originalDrag;
         }
 
-        rb.velocity = (wayPoints[0] - this.transform.position).normalized * speed;
-        enemyAnimation.ChangeDirection(-rb.velocity);
+        rb.AddForce((wayPoints[0] - this.transform.position).normalized * 10f);
+
+        if (rb.velocity.magnitude > Stats.Speed)
+        {
+            rb.velocity = rb.velocity.normalized * Stats.Speed;
+        }
+
+        // rb.velocity = (wayPoints[0] - this.transform.position).normalized * speed;
+        enemyAnimation.ChangeDirection(-(wayPoints[0] - this.transform.position).normalized);
 
         float distanceTraveled = Vector2.Distance(lastPosition, rb.position);
         lastPosition = rb.position;
@@ -154,19 +169,9 @@ public class Chaser : Poolable
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("PlayerBullet"))
+        if (other.CompareTag("Player"))
         {
-            wayPoints.Clear();
-            Dispose();
-            // isKnockback = true;
-            // Vector2 direction = other.GetComponent<Bullet>().GetDirection();
-            // rb.AddForce(direction * 10f, ForceMode2D.Impulse);
-        }
-        else if (other.CompareTag("Player"))
-        {
-            wayPoints.Clear();
-            // other.GetComponent<PlayerController>().TakeDamage(1);
-            Dispose();
+            other.GetComponent<IVisitable>()?.Accept(this);
         }
     }
 
@@ -175,6 +180,41 @@ public class Chaser : Poolable
         Vector2 v = rb.velocity;
 
         rb.AddForce(-dragRation * rb.mass * v);
+    }
+
+
+    public void Visit<T>(T visitable) where T : Component, IVisitable
+    {
+        if (visitable is PlayerStats playerStats)
+        {
+            playerStats.TakeDamage(Stats.Attack, Vector2.zero);
+        }
+    }
+
+    public override void TakeDamage(float damage, Vector2 direction)
+    {
+        curhealth -= damage;
+        if (curhealth <= 0)
+        {
+            curhealth = originHelth;
+            poolable.Dispose();
+        }
+        else
+        {
+            KickBack(direction);
+            isKnockback = true;
+        }
+    }
+
+    public override List<int> GetHealthInfo()
+    {
+        return new List<int> { (int)originHelth };
+    }
+
+
+    public override void KickBack(Vector2 direction)
+    {
+        rb.AddForce(direction, ForceMode2D.Impulse);
     }
 
     private void DrawDebug()

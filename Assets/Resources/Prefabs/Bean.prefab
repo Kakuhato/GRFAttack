@@ -102,6 +102,7 @@ MonoBehaviour:
   rb: {fileID: -7280462975950771168}
   speed: 1
   range: 10
+  damage: 1.5
 --- !u!58 &-7008034086537597197
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -24,11 +24,11 @@ public class PoolManager : RegulatorSingleton<PoolManager>
     public GameObject SpawnObject(
         GameObject prefab,
         Vector3 position,
-        List<Action<Poolable>> onDespawn,
+        Action<IPoolable> onDespawn,
         PoolType type = PoolType.None
     )
     {
-        if (prefab.GetComponent<Poolable>() == null)
+        if (prefab.GetComponent<IPoolable>() == null)
         {
             Debug.LogWarning("Trying to spawn an object that is not poolable: " + prefab.name);
             return null;
@@ -57,12 +57,9 @@ public class PoolManager : RegulatorSingleton<PoolManager>
             GameObject parentPool = GetParentPool(type);
             spawnedObject = Instantiate(prefab, position, Quaternion.identity);
             spawnedObject.SetActive(false);
-            Poolable poolable = spawnedObject.GetComponent<Poolable>();
+            IPoolable poolable = spawnedObject.GetComponent<IPoolable>();
+            poolable.OnDispose += onDespawn;
             poolable.OnDispose += DespawnObject;
-            foreach (var func in onDespawn)
-            {
-                poolable.OnDispose += func;
-            }
 
             if (parentPool != null)
                 spawnedObject.transform.parent = parentPool.transform;
@@ -84,13 +81,20 @@ public class PoolManager : RegulatorSingleton<PoolManager>
         PoolType type = PoolType.None
     )
     {
-        return SpawnObject(prefab, position, new List<Action<Poolable>>(), type);
+        return SpawnObject(prefab, position, null, type);
     }
 
 
-    public void DespawnObject(Poolable obj)
+    public void DespawnObject(IPoolable ip)
     {
         // 这里返回的是场景上的对象，而非脚本，因此会带有(Clone)
+        var obj = (ip as Component);
+        if (obj == null)
+        {
+            Debug.LogWarning("Trying to despawn an object that is not a component: " + ip.ToString());
+            return;
+        }
+
         PooledObjectInfo pool = objectPools.Find(p => p.PoolName == obj.gameObject.name.Replace("(Clone)", "").Trim());
 
         if (pool == null)

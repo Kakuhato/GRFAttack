@@ -8,8 +8,10 @@ public class GameManager : RegulatorSingleton<GameManager>
 {
     [SerializeField] private GameObject player;
 
-    public int initialRedHealth;
-    public int initialSoulHealth;
+    public List<int> playerHealthInfo;
+
+    private EventBinding<GameOverEvent> gameOverEventBinding;
+    private EventBinding<ScoreEvent> scoreEventBinding;
 
     public Transform PlayerTransform => player.transform;
 
@@ -18,6 +20,11 @@ public class GameManager : RegulatorSingleton<GameManager>
     protected override void InitialSingleton()
     {
         base.InitialSingleton();
+        gameOverEventBinding = new EventBinding<GameOverEvent>(GameOver);
+        EventBus<GameOverEvent>.Register(gameOverEventBinding);
+
+        scoreEventBinding = new EventBinding<ScoreEvent>(AddScore);
+        EventBus<ScoreEvent>.Register(scoreEventBinding);
     }
 
 
@@ -32,10 +39,9 @@ public class GameManager : RegulatorSingleton<GameManager>
         AudioManager.Instance.PlayBackGroundMusic("Audio/SinOfFire");
         Score = 0;
         UIManager.Instance.ShowPanel<GamePanel>();
-        AddScore(0);
+        EventBus<ScoreEvent>.Raise(new ScoreEvent { ScoreGained = 0 });
         player = GameObject.Find("Doll");
-        // initialRedHealth = player.GetComponent<Entity>().Health.GetCurrentRed();
-        // initialSoulHealth = player.GetComponent<Entity>().Health.GetCurrentSoul();
+        playerHealthInfo = player.GetComponent<PlayerStats>().GetHealthInfo();
         EnemySpawner.Instance.StartSpawning();
     }
 
@@ -61,9 +67,9 @@ public class GameManager : RegulatorSingleton<GameManager>
         UIManager.Instance.ShowPanel<GameOverPanel>();
     }
 
-    public void AddScore(int delta)
+    public void AddScore(ScoreEvent delta)
     {
-        Score += delta;
-        UIManager.Instance.GetPanel<GamePanel>()?.updateScore(Score);
+        Score += delta.ScoreGained;
+        UIManager.Instance.UpdatePanel(Score);
     }
 }

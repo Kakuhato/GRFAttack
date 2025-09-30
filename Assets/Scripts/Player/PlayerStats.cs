@@ -35,13 +35,23 @@ public class PlayerStats : Entity
         base.Update();
     }
 
-    public override void TakeDamage(float damage)
+    public override void TakeDamage(float damage, Vector2 direction)
     {
         for (int i = 1; i <= damage; i++)
         {
             Health.RemoveHeart();
-        }
+            EventBus<HealthEvent>.Raise(new HealthEvent { hurts = 1 });
 
-        EventBus<HealthEvent>.Raise(new HealthEvent { hurts = (int)damage });
+            if (Health.GetCurrentRed() <= 0)
+            {
+                EventBus<GameOverEvent>.Raise(new GameOverEvent());
+                break;
+            }
+        }
+    }
+
+    public override List<int> GetHealthInfo()
+    {
+        return new List<int> { Health.GetCurrentRed(), Health.GetCurrentSoul() };
     }
 }
