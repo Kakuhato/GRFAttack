@@ -165,7 +165,7 @@ public class Chaser : Poolable
         else if (other.CompareTag("Player"))
         {
             wayPoints.Clear();
-            other.GetComponent<PlayerController>().TakeDamage(1);
+            // other.GetComponent<PlayerController>().TakeDamage(1);
             Dispose();
         }
     }

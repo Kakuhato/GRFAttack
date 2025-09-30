@@ -34,8 +34,8 @@ public class GameManager : RegulatorSingleton<GameManager>
         UIManager.Instance.ShowPanel<GamePanel>();
         AddScore(0);
         player = GameObject.Find("Doll");
-        initialRedHealth = player.GetComponent<Entity>().Health.GetCurrentRed();
-        initialSoulHealth = player.GetComponent<Entity>().Health.GetCurrentSoul();
+        // initialRedHealth = player.GetComponent<Entity>().Health.GetCurrentRed();
+        // initialSoulHealth = player.GetComponent<Entity>().Health.GetCurrentSoul();
         EnemySpawner.Instance.StartSpawning();
     }
 

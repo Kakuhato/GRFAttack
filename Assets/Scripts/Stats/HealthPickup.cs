@@ -8,13 +8,13 @@ public class HealthPickup : Pickup
 
     protected override bool ApplyPickupEffect(Entity entity)
     {
-        bool success = entity.Health.AddHeart(this.healthType);
-        if (success)
-        {
-            GamePanel gamePanel = UIManager.Instance.GetPanel<GamePanel>();
-            gamePanel.healthBar.AddHealth(this.healthType);
-        }
+        // bool success = entity.Health.AddHeart(this.healthType);
+        // if (success)
+        // {
+        //     GamePanel gamePanel = UIManager.Instance.GetPanel<GamePanel>();
+        //     gamePanel.healthBar.AddHealth(this.healthType);
+        // }
 
-        return success;
+        return true;
     }
 }

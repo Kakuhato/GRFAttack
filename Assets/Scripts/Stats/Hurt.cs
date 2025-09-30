@@ -6,17 +6,8 @@ public class Hurt : Pickup
 
     protected override bool ApplyPickupEffect(Entity entity)
     {
-        bool success = entity.Health.RemoveHeart();
-        if (success)
-        {
-            GamePanel gamePanel = UIManager.Instance.GetPanel<GamePanel>();
-            gamePanel.healthBar.RemoveHealth();
-        }
-        else
-        {
-            GameManager.Instance.GameOver();
-        }
+        entity.TakeDamage(hurtAmount);
 
-        return success;
+        return true;
     }
 }

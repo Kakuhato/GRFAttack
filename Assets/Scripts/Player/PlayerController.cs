@@ -90,28 +90,23 @@ public class PlayerController : MonoBehaviour
         fireController.Fire(this.transform.position, aimDirection, entity.Stats.ShootSpeed, entity.Stats.ShootRange);
     }
 
-    public void TakeDamage(int damage)
-    {
-        if (!this.entity.Health.RemoveHeart())
-        {
-            Die();
-        }
-        else
-        {
-            #region Temeporary code! Needs modification
-
-            // 临时写法！ 需要修改
-            GamePanel gamePanel = UIManager.Instance.GetPanel<GamePanel>();
-            gamePanel.healthBar.RemoveHealth();
-
-            #endregion
-        }
-    }
-
-    public void Die()
-    {
-        GameManager.Instance.GameOver();
-    }
+    // public void TakeDamage(int damage)
+    // {
+    //     {
+    //         #region Temeporary code! Needs modification
+    //
+    //         // 临时写法！ 需要修改
+    //         GamePanel gamePanel = UIManager.Instance.GetPanel<GamePanel>();
+    //         gamePanel.healthBar.RemoveHealth();
+    //
+    //         #endregion
+    //     }
+    // }
+    //
+    // public void Die()
+    // {
+    //     GameManager.Instance.GameOver();
+    // }
 
     public void AOE()
     {

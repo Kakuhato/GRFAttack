@@ -11266,7 +11266,7 @@ GameObject:
   - component: {fileID: 719683336}
   - component: {fileID: 719683333}
   - component: {fileID: 719683334}
-  - component: {fileID: 719683335}
+  - component: {fileID: 719683337}
   m_Layer: 6
   m_Name: Doll
   m_TagString: Player
@@ -11306,7 +11306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd7b8c3e083a29542a9b56f5c06d4cea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entity: {fileID: 719683335}
+  entity: {fileID: 719683337}
   animanationController: {fileID: 719683334}
   crosshair: {fileID: 804256893}
   weapon: {fileID: 1842475807}
@@ -11389,20 +11389,6 @@ MonoBehaviour:
   walk: walk
   idle: wait
   boneName: target2
---- !u!114 &719683335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 719683328}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6f1204585c31e845a0783014fef9845, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseStats: {fileID: 11400000, guid: 1d45781139377464a9c2e074ae8f3990, type: 2}
-  healthData: {fileID: 11400000, guid: d537704d793bb3341aa2b483ef109bc0, type: 2}
 --- !u!61 &719683336
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11448,6 +11434,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.39, y: 0.6}
   m_EdgeRadius: 0.06
+--- !u!114 &719683337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719683328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3977e1c865393b438649e7d5ce1a7c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseStats: {fileID: 11400000, guid: 1d45781139377464a9c2e074ae8f3990, type: 2}
+  healthData: {fileID: 11400000, guid: d537704d793bb3341aa2b483ef109bc0, type: 2}
 --- !u!1 &735836498
 GameObject:
   m_ObjectHideFlags: 0
