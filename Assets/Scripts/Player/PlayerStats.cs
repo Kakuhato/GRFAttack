@@ -44,10 +44,15 @@ public class PlayerStats : Entity
 
             if (Health.GetCurrentRed() <= 0)
             {
-                EventBus<GameOverEvent>.Raise(new GameOverEvent());
+                Die();
                 break;
             }
         }
+    }
+
+    public void Die()
+    {
+        EventBus<GameOverEvent>.Raise(new GameOverEvent());
     }
 
     public override List<int> GetHealthInfo()

@@ -68,8 +68,6 @@ public class EnemySpawner : RegulatorSingleton<EnemySpawner>
                             currentEnemies--;
                             TrySpawnEnemy();
                             TrySpawnEnemy();
-                            EventBus<ScoreEvent>.Raise(new ScoreEvent
-                                { ScoreGained = prefab.GetComponent<Chaser>().GetHealthInfo()[0] });
                         }
                         , PoolType.Enemy);
                     enemy.SetActive(true);

@@ -33,6 +33,11 @@ public class EnemyAnimation : MonoBehaviour
         currentEntry = sa.AnimationState.SetAnimation(0, walk, true);
     }
 
+    public TrackEntry Die()
+    {
+        return currentEntry = sa.AnimationState.SetAnimation(0, "die3", false);
+    }
+
 
     public void ChangeDirection(Vector2 direction)
     {

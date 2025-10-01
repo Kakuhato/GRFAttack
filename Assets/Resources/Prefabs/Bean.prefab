@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5450824301355652274}
   - component: {fileID: -7008034086537597197}
   - component: {fileID: -7280462975950771168}
+  - component: {fileID: 6038935040091894371}
   m_Layer: 0
   m_Name: Bean
   m_TagString: Untagged
@@ -165,3 +166,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &6038935040091894371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7631319989120076429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99f5910e41d1c41418ff3d342f5b1e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

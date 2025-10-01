@@ -5,20 +5,26 @@ using UnityEngine;
 using UnityEngine.Events;
 using Vector3 = System.Numerics.Vector3;
 
-public class Bullet : PoolableObject, IVisitor
+public class Bullet : MonoBehaviour, IVisitor
 {
     public Rigidbody2D rb;
     [SerializeField] private float speed = 1;
     [SerializeField] private float range = 10;
     [SerializeField] private float damage = 1.5f;
+    [SerializeField] private IPoolable poolable;
+
 
     private Vector2 direction;
     private IVisitor iVisitorImplementation;
 
-
-    protected override void OnEnable()
+    private void Awake()
     {
-        base.OnEnable();
+        poolable = GetComponent<IPoolable>();
+    }
+
+
+    protected void OnEnable()
+    {
         if (rb != null)
         {
             rb.velocity = transform.right * speed;
@@ -62,14 +68,14 @@ public class Bullet : PoolableObject, IVisitor
            )
         {
             other.GetComponent<IVisitable>()?.Accept(this);
-            Dispose();
+            poolable.Dispose();
         }
     }
 
     IEnumerator MyCoroutine(float seconds)
     {
         yield return new WaitForSeconds(seconds);
-        Dispose();
+        poolable.Dispose();
     }
 
     public void Visit<T>(T visitable) where T : Component, IVisitable

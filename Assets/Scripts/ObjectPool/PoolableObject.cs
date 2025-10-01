@@ -13,7 +13,7 @@ public class PoolableObject : MonoBehaviour, IPoolable
         IsDisposed = false;
     }
 
-    public void Dispose()
+    public virtual void Dispose()
     {
         if (IsDisposed) return;
         IsDisposed = true;
