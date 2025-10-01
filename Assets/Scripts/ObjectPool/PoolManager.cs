@@ -16,11 +16,17 @@ public class PoolManager : RegulatorSingleton<PoolManager>
     protected override void InitialSingleton()
     {
         base.InitialSingleton();
-        bulletPool = new GameObject("BulletPool");
-        // bulletPool.transform.parent = this.transform;
-        enemyPool = new GameObject("EnemyPool");
-        // enemyPool.transform.parent = this.transform;
-        buffPool = new GameObject("BuffPool");
+        GetPool();
+    }
+
+    public void GetPool()
+    {
+        if (buffPool == null)
+            bulletPool = new GameObject("BulletPool");
+        if (enemyPool == null)
+            enemyPool = new GameObject("EnemyPool");
+        if (buffPool == null)
+            buffPool = new GameObject("BuffPool");
     }
 
     public GameObject SpawnObject(
@@ -114,6 +120,7 @@ public class PoolManager : RegulatorSingleton<PoolManager>
 
     private GameObject GetParentPool(PoolType type)
     {
+        GetPool();
         switch (type)
         {
             case PoolType.Buff:

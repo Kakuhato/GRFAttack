@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Utils;
+using Random = UnityEngine.Random;
 
 public class BuffSpawner : RegulatorSingleton<BuffSpawner>
 {
@@ -10,7 +12,6 @@ public class BuffSpawner : RegulatorSingleton<BuffSpawner>
 
     public void SpawnBuff(EnemyDieEvent data)
     {
-        Debug.Log("Spawning buff at " + data.Position);
         if (buffDropTable.buffDropRates.Count == 0)
         {
             Debug.LogWarning("Buff drop table is empty!");
@@ -18,7 +19,7 @@ public class BuffSpawner : RegulatorSingleton<BuffSpawner>
         }
 
         BuffData selectedBuff = GetRandomBuff();
-
+        Debug.Log("Spawning buff: " + selectedBuff.type);
         GameObject buffObject = PoolManager.Instance.SpawnObject(buffPrefab, data.Position, PoolType.Buff);
         buffObject.GetComponent<BuffBase>().Init(selectedBuff);
         buffObject.SetActive(true);
@@ -66,5 +67,10 @@ public class BuffSpawner : RegulatorSingleton<BuffSpawner>
 
         enemyDieEventBinding = new EventBinding<EnemyDieEvent>(SpawnBuff);
         EventBus<EnemyDieEvent>.Register(enemyDieEventBinding);
+    }
+
+    private void OnDestroy()
+    {
+        EventBus<EnemyDieEvent>.Unregister(enemyDieEventBinding);
     }
 }

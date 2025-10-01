@@ -110,7 +110,6 @@ public class Chaser : Entity, IVisitor
     public void Die()
     {
         if (isDead) return;
-
         isDead = true;
         col.enabled = false;
 
@@ -126,6 +125,9 @@ public class Chaser : Entity, IVisitor
             trackEntry.Complete -= OnDeathAnimationComplete;
 
             curhealth = originHelth;
+
+            Debug.Log("Chaser Die" + Time.time);
+
             EventBus<EnemyDieEvent>.Raise(new EnemyDieEvent
                 { ScoreGained = (int)originHelth, Position = this.transform.position });
 
