@@ -15,10 +15,11 @@ public class BulletManager
         this.tag = tag;
     }
 
-    public void SpawnBullet(Vector3 position, float direction, float speed, float range)
+    public void SpawnBullet(Vector3 position, float attack, float direction, float speed, float range)
     {
         GameObject bullet = PoolManager.Instance.SpawnObject(this.bulletPrefab, position, PoolType.Bullet);
         Bullet bulletScript = bullet.GetComponent<Bullet>();
+        bulletScript.SetAttack(attack);
         bulletScript.SetSpeed(speed);
         bulletScript.SetRange(range);
         bulletScript.SetDirection(direction);

@@ -11,7 +11,7 @@ public class GameManager : RegulatorSingleton<GameManager>
     public List<int> playerHealthInfo;
 
     private EventBinding<GameOverEvent> gameOverEventBinding;
-    private EventBinding<ScoreEvent> scoreEventBinding;
+    private EventBinding<EnemyDieEvent> scoreEventBinding;
 
     public Transform PlayerTransform => player.transform;
 
@@ -23,8 +23,8 @@ public class GameManager : RegulatorSingleton<GameManager>
         gameOverEventBinding = new EventBinding<GameOverEvent>(GameOver);
         EventBus<GameOverEvent>.Register(gameOverEventBinding);
 
-        scoreEventBinding = new EventBinding<ScoreEvent>(AddScore);
-        EventBus<ScoreEvent>.Register(scoreEventBinding);
+        scoreEventBinding = new EventBinding<EnemyDieEvent>(AddScore);
+        EventBus<EnemyDieEvent>.Register(scoreEventBinding);
     }
 
 
@@ -39,7 +39,7 @@ public class GameManager : RegulatorSingleton<GameManager>
         AudioManager.Instance.PlayBackGroundMusic("Audio/SinOfFire");
         Score = 0;
         UIManager.Instance.ShowPanel<GamePanel>();
-        EventBus<ScoreEvent>.Raise(new ScoreEvent { ScoreGained = 0 });
+        // EventBus<EnemyDieEvent>.Raise(new EnemyDieEvent { ScoreGained = 0 });
         player = GameObject.Find("Doll");
         playerHealthInfo = player.GetComponent<PlayerStats>().GetHealthInfo();
         EnemySpawner.Instance.StartSpawning();
@@ -67,7 +67,7 @@ public class GameManager : RegulatorSingleton<GameManager>
         UIManager.Instance.ShowPanel<GameOverPanel>();
     }
 
-    public void AddScore(ScoreEvent delta)
+    public void AddScore(EnemyDieEvent delta)
     {
         Score += delta.ScoreGained;
         UIManager.Instance.UpdatePanel(Score);

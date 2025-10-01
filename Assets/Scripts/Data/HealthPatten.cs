@@ -11,7 +11,7 @@ public enum HealthType
 }
 
 
-[CreateAssetMenu(fileName = "HealthPatten", menuName = "ScriptableObjects/HealthData")]
+[CreateAssetMenu(fileName = "HealthPatten", menuName = "ScriptableObjects/HealthPatten")]
 public class HealthPatten : ScriptableObject
 {
     [SerializeField] private Sprite redHeart;

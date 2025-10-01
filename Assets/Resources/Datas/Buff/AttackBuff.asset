@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ce1ec1f8a54eb041a828c273a47459f, type: 3}
-  m_Name: PlayerStats
+  m_Script: {fileID: 11500000, guid: 892d094d61974d71bddca6c23466f921, type: 3}
+  m_Name: AttackBuff
   m_EditorClassIdentifier: 
-  attack: 1
-  shootRange: 5
-  speed: 5
-  shootSpeed: 10
+  type: 0
+  operatorType: 0
+  value: 1
+  duration: 5
+  icon: {fileID: 21300000, guid: bb291332e073a7f4a8d671fcb13f068e, type: 3}

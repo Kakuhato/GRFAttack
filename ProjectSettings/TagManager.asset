@@ -10,6 +10,7 @@ TagManager:
   - EnemyBullet
   - ForeGround
   - SpawnGround
+  - PickUpBuff
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - PlayerBullet
   - EnemyBullet
   - Foreground
-  - 
+  - Buff
   - 
   - 
   - 

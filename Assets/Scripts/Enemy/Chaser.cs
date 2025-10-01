@@ -76,94 +76,6 @@ public class Chaser : Entity, IVisitor
         }
     }
 
-    // void PhysicChase()
-    // {
-    //     if (wayPoints.Count() == 0)
-    //     {
-    //         rb.drag = 1f;
-    //         enemyAnimation.Idle();
-    //         return;
-    //     }
-    //     else
-    //     {
-    //         enemyAnimation.Walk();
-    //         rb.drag = originalDrag;
-    //     }
-    //
-    //     rb.AddForce((wayPoints[0] - this.transform.position).normalized * 10f);
-    //
-    //     if (rb.velocity.magnitude > Stats.Speed)
-    //     {
-    //         rb.velocity = rb.velocity.normalized * Stats.Speed;
-    //     }
-    //
-    //     // rb.velocity = (wayPoints[0] - this.transform.position).normalized * speed;
-    //     enemyAnimation.ChangeDirection(-(wayPoints[0] - this.transform.position).normalized);
-    //
-    //     float distanceTraveled = Vector2.Distance(lastPosition, rb.position);
-    //     lastPosition = rb.position;
-    //
-    //     if (distanceTraveled < Time.fixedDeltaTime)
-    //     {
-    //         if (stuckTime < 0) stuckTime = Time.time;
-    //
-    //         if (Time.time - stuckTime > 0.3f)
-    //         {
-    //             Vector2 randomCircle = Random.insideUnitCircle.normalized * 1.5f;
-    //             Vector3 getOutPosition = rb.position + randomCircle;
-    //             getOutPosition = new Vector3(getOutPosition.x, getOutPosition.y, 0);
-    //
-    //             if (!Physics2D.OverlapCircle(getOutPosition, 0.5f, foregroundLayerMask))
-    //             {
-    //                 if (!getOutPointExist)
-    //                 {
-    //                     wayPoints.Insert(0, getOutPosition);
-    //
-    //                     getOutPointExist = true;
-    //                 }
-    //                 else
-    //                 {
-    //                     // 上次尝试脱离卡死失败
-    //                     wayPoints[0] = getOutPosition;
-    //                 }
-    //
-    //                 stuckTime = -1;
-    //             }
-    //         }
-    //     }
-    // }
-
-    // void Chase()
-    // {
-    //     target = GameManager.Instance.PlayerTransform;
-    //     if (target == null) return;
-    //     float distance = Vector2.Distance(this.transform.position, TargetPosition);
-    //     Vector2 direction = (TargetPosition - this.transform.position).normalized;
-    //
-    //     if (!Physics2D.CircleCast((Vector2)this.transform.position, 0.2f, direction, distance, foregroundLayerMask))
-    //     {
-    //         wayPoints.Clear();
-    //         wayPoints.Add(TargetPosition);
-    //     }
-    //
-    //
-    //     if (wayPoints.Count > 0 && (Vector2.Distance(wayPoints[wayPoints.Count - 1], TargetPosition) > 1f))
-    //     {
-    //         wayPoints.Add(TargetPosition);
-    //     }
-    //
-    //     if (wayPoints.Count() > 80) wayPoints.Clear();
-    //
-    //     if (wayPoints.Count == 0) return;
-    //
-    //     if (Vector2.Distance(this.transform.position, wayPoints[0]) < 1f)
-    //     {
-    //         wayPoints.RemoveAt(0);
-    //         getOutPointExist = false;
-    //     }
-    // }
-
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
@@ -177,6 +89,7 @@ public class Chaser : Entity, IVisitor
         if (visitable is PlayerStats playerStats)
         {
             playerStats.TakeDamage(Stats.Attack, Vector2.zero);
+            Die();
         }
     }
 
@@ -213,7 +126,8 @@ public class Chaser : Entity, IVisitor
             trackEntry.Complete -= OnDeathAnimationComplete;
 
             curhealth = originHelth;
-            EventBus<ScoreEvent>.Raise(new ScoreEvent { ScoreGained = (int)originHelth });
+            EventBus<EnemyDieEvent>.Raise(new EnemyDieEvent
+                { ScoreGained = (int)originHelth, Position = this.transform.position });
 
             poolable.Dispose();
         }

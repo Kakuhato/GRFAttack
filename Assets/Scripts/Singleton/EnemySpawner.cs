@@ -66,7 +66,7 @@ public class EnemySpawner : RegulatorSingleton<EnemySpawner>
                         (_) =>
                         {
                             currentEnemies--;
-                            TrySpawnEnemy();
+                            // TrySpawnEnemy();
                             TrySpawnEnemy();
                         }
                         , PoolType.Enemy);
@@ -77,8 +77,7 @@ public class EnemySpawner : RegulatorSingleton<EnemySpawner>
                 }
             }
         }
-
-        Debug.LogWarning("Failed to find a valid spawn position after maximum attempts.");
+        // Debug.LogWarning("Failed to find a valid spawn position after maximum attempts.");
     }
 
 

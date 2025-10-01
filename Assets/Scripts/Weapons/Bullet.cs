@@ -34,6 +34,11 @@ public class Bullet : MonoBehaviour, IVisitor
         StartCoroutine(MyCoroutine(range / speed));
     }
 
+    public void SetAttack(float dmg)
+    {
+        this.damage = dmg;
+    }
+
 
     public void SetSpeed(float s)
     {

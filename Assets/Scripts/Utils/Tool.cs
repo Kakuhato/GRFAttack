@@ -16,6 +16,7 @@ namespace Utils
         None,
         Bullet,
         Enemy,
+        Buff
     }
 
     public enum RoundPosition

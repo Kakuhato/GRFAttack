@@ -11,10 +11,6 @@ public class PlayerStats : Entity
     [SerializeField, InlineEditor, Required]
     private HealthData healthData;
 
-    void HandleTestEvent()
-    {
-        Debug.Log("TestEvnet received in PlayerStats");
-    }
 
     protected override void Awake()
     {
@@ -22,18 +18,6 @@ public class PlayerStats : Entity
         Health = new Health(healthData);
     }
 
-    private void OnEnable()
-    {
-    }
-
-    private void OnDisable()
-    {
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-    }
 
     public override void TakeDamage(float damage, Vector2 direction)
     {
@@ -47,6 +31,19 @@ public class PlayerStats : Entity
                 Die();
                 break;
             }
+        }
+    }
+
+    public override bool Heal(float amount)
+    {
+        if (Health.AddHeart(HealthType.Soul))
+        {
+            EventBus<HealthEvent>.Raise(new HealthEvent { healthType = HealthType.Soul, hurts = -1 });
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 

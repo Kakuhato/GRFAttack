@@ -21,9 +21,9 @@ public class FireController : MonoBehaviour
     }
 
 
-    public void Fire(Vector3 position, float direction, float speed, float range)
+    public void Fire(Vector3 position, float attack, float direction, float speed, float range)
     {
-        bulletManager.SpawnBullet(position, direction, speed, range);
+        bulletManager.SpawnBullet(position, attack, direction, speed, range);
         // foreach(WeaponBase weapon in weapons)
         // {
         //     weapon.Fire(direction, speed, range);

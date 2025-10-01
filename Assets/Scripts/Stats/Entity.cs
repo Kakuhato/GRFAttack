@@ -35,6 +35,11 @@ public class Entity : MonoBehaviour, IVisitable
         // TODO: 将敌人逻辑和玩家逻辑统一继承到这里
     }
 
+    public virtual bool Heal(float amount)
+    {
+        return false;
+    }
+
     public virtual void KickBack(Vector2 direction)
     {
     }

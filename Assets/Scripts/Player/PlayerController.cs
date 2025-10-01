@@ -87,7 +87,8 @@ public class PlayerController : MonoBehaviour
 
     public void Fire()
     {
-        fireController.Fire(this.transform.position, aimDirection, entity.Stats.ShootSpeed, entity.Stats.ShootRange);
+        fireController.Fire(this.transform.position, entity.Stats.Attack, aimDirection, entity.Stats.ShootSpeed,
+            entity.Stats.ShootRange);
     }
 
     // public void TakeDamage(int damage)

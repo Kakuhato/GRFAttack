@@ -24,4 +24,8 @@ public abstract class BuffBase : PoolableObject, IVisitor
             other.GetComponent<IVisitable>()?.Accept(this);
         }
     }
+
+    public virtual void Init(BuffData data)
+    {
+    }
 }

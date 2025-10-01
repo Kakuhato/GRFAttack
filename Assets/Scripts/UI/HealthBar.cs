@@ -17,9 +17,30 @@ public class HealthBar : MonoBehaviour
 
     private int HealthLimit = 10;
 
+    public void ChangeHeart(HealthEvent healthEvent)
+    {
+        if (healthEvent.hurts > 0)
+        {
+            RemoveHealth();
+        }
+        else if (healthEvent.hurts < 0)
+        {
+            AddHealth(healthEvent.healthType);
+        }
+    }
 
-    // 后面可采用工厂模式
-    [Button("Add Health")]
+
+    private void OnEnable()
+    {
+        healthEventBinding = new EventBinding<HealthEvent>(ChangeHeart);
+        EventBus<HealthEvent>.Register(healthEventBinding);
+    }
+
+    private void OnDisable()
+    {
+        EventBus<HealthEvent>.Unregister(healthEventBinding);
+    }
+
     public void AddHealth(HealthType healthType)
     {
         if (healthType == HealthType.Red)
@@ -33,17 +54,6 @@ public class HealthBar : MonoBehaviour
             GameObject heart = healthPatten.CreateSoul(heartItem, transform);
             heartList.AddLast(heart);
         }
-    }
-
-    private void OnEnable()
-    {
-        healthEventBinding = new EventBinding<HealthEvent>(RemoveHealth);
-        EventBus<HealthEvent>.Register(healthEventBinding);
-    }
-
-    private void OnDisable()
-    {
-        EventBus<HealthEvent>.Unregister(healthEventBinding);
     }
 
     public void RemoveHealth()

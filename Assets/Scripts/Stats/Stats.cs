@@ -8,6 +8,7 @@ public enum StatsType
     ShootRange,
     Speed,
     ShootSpeed,
+    Health
 }
 
 public class Stats
