@@ -51,6 +51,8 @@ public class PoolManager : RegulatorSingleton<PoolManager>
         }
 
         GameObject spawnedObject = null;
+        
+        pool.PooledObjects.RemoveAll(item => item == null);
         foreach (var item in pool.PooledObjects)
         {
             if (item != null)

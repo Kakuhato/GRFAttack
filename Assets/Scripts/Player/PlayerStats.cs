@@ -49,7 +49,7 @@ public class PlayerStats : Entity
 
     public void Die()
     {
-        EventBus<GameOverEvent>.Raise(new GameOverEvent());
+        // EventBus<GameOverEvent>.Raise(new GameOverEvent());
     }
 
     public override List<int> GetHealthInfo()
