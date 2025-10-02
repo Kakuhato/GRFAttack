@@ -4,23 +4,27 @@ using UnityEngine;
 
 public class Health
 {
-    private readonly HealthData healthData;
+    private int redLimit = 6;
+    private int currentRed = 3;
+    private int currentSoul = 3;
 
     public Health(HealthData healthData)
     {
-        this.healthData = healthData;
+        this.redLimit = healthData.redLimit;
+        this.currentRed = healthData.currentRed;
+        this.currentSoul = healthData.currentSoul;
     }
 
     public bool AddHeart(HealthType healthType)
     {
         if (healthType == HealthType.Red)
         {
-            if (this.healthData.currentRed < this.healthData.redLimit)
+            if (this.currentRed < this.redLimit)
             {
-                this.healthData.currentRed++;
-                if (this.healthData.currentRed + this.healthData.currentSoul > HealthData.MAX_HEATH)
+                this.currentRed++;
+                if (this.currentRed + this.currentSoul > HealthData.MAX_HEATH)
                 {
-                    this.healthData.currentSoul = HealthData.MAX_HEATH - this.healthData.currentRed;
+                    this.currentSoul = HealthData.MAX_HEATH - this.currentRed;
                 }
 
                 return true;
@@ -28,9 +32,9 @@ public class Health
         }
         else if (healthType == HealthType.Soul)
         {
-            if (this.healthData.currentRed + this.healthData.currentSoul < HealthData.MAX_HEATH)
+            if (this.currentRed + this.currentSoul < HealthData.MAX_HEATH)
             {
-                this.healthData.currentSoul++;
+                this.currentSoul++;
                 return true;
             }
         }
@@ -40,14 +44,14 @@ public class Health
 
     public bool RemoveHeart()
     {
-        if (this.healthData.currentSoul > 0)
+        if (this.currentSoul > 0)
         {
-            this.healthData.currentSoul--;
+            this.currentSoul--;
             return true;
         }
-        else if (this.healthData.currentRed > 0)
+        else if (this.currentRed > 0)
         {
-            this.healthData.currentRed--;
+            this.currentRed--;
             return true;
         }
 
@@ -56,11 +60,11 @@ public class Health
 
     public int GetCurrentRed()
     {
-        return this.healthData.currentRed;
+        return this.currentRed;
     }
 
     public int GetCurrentSoul()
     {
-        return this.healthData.currentSoul;
+        return this.currentSoul;
     }
 }

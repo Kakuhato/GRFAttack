@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour
 {
@@ -21,7 +22,8 @@ public class PlayerController : MonoBehaviour
     private float verticalMove;
     private Vector2 moveInput;
 
-    private bool IsMainController = false;
+    private bool isMainController = false;
+    private bool isFollowing = false;
 
     // Start is called before the first frame update
     void Start()
@@ -36,10 +38,13 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        horizontalMove = Input.GetAxisRaw("Horizontal");
-        verticalMove = Input.GetAxisRaw("Vertical");
-        moveInput.x = horizontalMove;
-        moveInput.y = verticalMove;
+        if (isMainController)
+        {
+            horizontalMove = Input.GetAxisRaw("Horizontal");
+            verticalMove = Input.GetAxisRaw("Vertical");
+            moveInput.x = horizontalMove;
+            moveInput.y = verticalMove;
+        }
 
         aimDirection = Target();
 
@@ -54,19 +59,43 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!isMainController) return;
         Move();
     }
 
 
     public void Move()
     {
-        // this.transform.Translate(horizontalMove * entity.Stats.Speed * Time.deltaTime * Vector3.right);
-        // this.transform.Translate(verticalMove * entity.Stats.Speed * Time.deltaTime * Vector3.up);
         rb.velocity = entity.Stats.Speed * moveInput.normalized;
-        // rb.MovePosition(rb.position + entity.Stats.Speed * Time.fixedDeltaTime * moveIput.normalized);
         if (moveInput.magnitude > 0) animanationController.Walk(horizontalMove);
-        // if (horizontalMove != 0 || verticalMove != 0) animanationController.Walk(horizontalMove);
         else animanationController.Idle();
+    }
+
+    public void Follow(Vector3 targetPosition, Vector3 mainPosition, float tolerantDistance = 1.5f)
+    {
+        Vector3 direction = targetPosition - this.transform.position;
+        float lazyDistance = (mainPosition - this.transform.position).magnitude;
+        float distance = direction.magnitude;
+
+        if (lazyDistance > tolerantDistance * 1.5f)
+        {
+            isFollowing = true;
+        }
+        else if (distance <= 0.01f)
+        {
+            isFollowing = false;
+        }
+
+        if (isFollowing)
+        {
+            rb.velocity = entity.Stats.Speed * 0.8f * direction.normalized;
+            animanationController.Walk(direction.x);
+        }
+        else
+        {
+            rb.velocity = Vector2.zero;
+            animanationController.Idle();
+        }
     }
 
     public float Target()
@@ -104,13 +133,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // void OnTriggerEnter2D(Collider2D other)
-    // {
-    //     if (other.CompareTag("Reward"))
-    //     {
-    //         WeaponBase we = other.GetComponent<WeaponBase>();
-    //         we.ResetParent(this.weapon);
-    //         fireController.AddWeapon(we);
-    //     }
-    // }
+    public void SetMainController(bool isMain)
+    {
+        isMainController = isMain;
+    }
+
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        if (other.collider.CompareTag("ForeGround"))
+        {
+            isFollowing = false;
+        }
+    }
 }

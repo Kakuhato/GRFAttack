@@ -40,10 +40,11 @@ public class GameManager : RegulatorSingleton<GameManager>
         AudioManager.Instance.PlayBackGroundMusic("Audio/SinOfFire");
         Score = 0;
         UIManager.Instance.ShowPanel<GamePanel>();
-        // EventBus<EnemyDieEvent>.Raise(new EnemyDieEvent { ScoreGained = 0 });
+
         player = GameObject.Find("Doll");
         playerHealthInfo = player.GetComponent<PlayerStats>().GetHealthInfo();
-        EnemySpawner.Instance.StartSpawning();
+
+        // EnemySpawner.Instance.StartSpawning();
     }
 
     public void Move2Battle()
