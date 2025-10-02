@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -71,5 +72,11 @@ public class GameManager : RegulatorSingleton<GameManager>
     {
         Score += delta.ScoreGained;
         UIManager.Instance.UpdatePanel(Score);
+    }
+
+    private void OnDestroy()
+    {
+        EventBus<GameOverEvent>.Unregister(gameOverEventBinding);
+        EventBus<EnemyDieEvent>.Unregister(scoreEventBinding);
     }
 }
