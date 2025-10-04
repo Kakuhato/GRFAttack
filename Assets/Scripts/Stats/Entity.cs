@@ -32,7 +32,7 @@ public class Entity : MonoBehaviour, IVisitable
 
     public virtual void TakeDamage(float damage, Vector2 direction)
     {
-        // TODO: 将敌人逻辑和玩家逻辑统一继承到这里
+        // TODO: 不要传入方向，传入打击者的位置和力度
     }
 
     public virtual bool Heal(float amount)
@@ -42,6 +42,7 @@ public class Entity : MonoBehaviour, IVisitable
 
     public virtual void KickBack(Vector2 direction)
     {
+        // TODO: 不要传入方向，传入打击者的位置和力度
     }
 
     public virtual List<int> GetHealthInfo()

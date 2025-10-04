@@ -43,6 +43,15 @@ public class PlayerPartyManager : MonoBehaviour
             new Vector3(2, -2, 0)
         };
 
+        Vector3[] crossOffsets = new Vector3[]
+        {
+            Vector3.zero,
+            new Vector3(0, -1.5f, 0),
+            new Vector3(-1.5f, 0, 0),
+            new Vector3(1.5f, 0, 0),
+            new Vector3(0, 1.5f, 0)
+        };
+
         Vector3 mainPosition = partyMembers[currentMemberIndex].transform.position;
         Vector3 moveDirection = mainPosition - lastMainPosition;
         if (moveDirection.magnitude < 0.01f)
@@ -65,10 +74,10 @@ public class PlayerPartyManager : MonoBehaviour
             var pc = partyMembers[i].GetComponent<PlayerController>();
 
             Quaternion rotation = Quaternion.FromToRotation(Vector3.up, lastMoveDirection.normalized);
-            Vector3 offset = rotation * triangleOffsets[offsetIndex++];
+            Vector3 offset = rotation * crossOffsets[offsetIndex++];
 
             pc.Follow(partyMembers[currentMemberIndex].transform.position + offset,
-                partyMembers[currentMemberIndex].transform.position, 1.5f);
+                partyMembers[currentMemberIndex].transform.position, offset.magnitude);
         }
     }
 
