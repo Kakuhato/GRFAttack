@@ -20,9 +20,4 @@ public class GamePanel : BasePanel
         pauseButton.onClick.AddListener(() => { UIManager.Instance.ShowPanel<PausePanel>(); }
         );
     }
-
-    public override void UpdatePanelData(int data)
-    {
-        scoreText.text = "Score: " + data;
-    }
 }

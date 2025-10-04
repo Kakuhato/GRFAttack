@@ -8,11 +8,13 @@ using UnityEngine.Serialization;
 public class GameManager : RegulatorSingleton<GameManager>
 {
     [SerializeField] private GameObject player;
+    [SerializeField] StringEventChannel gameScoreEventChannel;
 
     public List<int> playerHealthInfo;
 
     private EventBinding<GameOverEvent> gameOverEventBinding;
     private EventBinding<EnemyDieEvent> scoreEventBinding;
+
 
     public Transform PlayerTransform => player.transform;
 
@@ -26,6 +28,8 @@ public class GameManager : RegulatorSingleton<GameManager>
 
         scoreEventBinding = new EventBinding<EnemyDieEvent>(AddScore);
         EventBus<EnemyDieEvent>.Register(scoreEventBinding);
+
+        gameScoreEventChannel = Resources.Load<StringEventChannel>("Datas/GameScore");
     }
 
 
@@ -44,7 +48,7 @@ public class GameManager : RegulatorSingleton<GameManager>
         player = GameObject.Find("Doll");
         playerHealthInfo = player.GetComponent<PlayerStats>().GetHealthInfo();
 
-        // EnemySpawner.Instance.StartSpawning();
+        EnemySpawner.Instance.StartSpawning();
     }
 
     public void Move2Battle()
@@ -72,7 +76,13 @@ public class GameManager : RegulatorSingleton<GameManager>
     public void AddScore(EnemyDieEvent delta)
     {
         Score += delta.ScoreGained;
-        UIManager.Instance.UpdatePanel(Score);
+        PublishGameScore();
+    }
+
+    private void PublishGameScore()
+    {
+        if (gameScoreEventChannel != null)
+            gameScoreEventChannel.Invoke("Score: " + Score.ToString());
     }
 
     private void OnDestroy()

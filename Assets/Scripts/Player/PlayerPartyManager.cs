@@ -12,7 +12,7 @@ public class PlayerPartyManager : MonoBehaviour
     [Header("Party Settings")] [SerializeField]
     private int maxPartySize = 5;
 
-    [SerializeField] private List<GameObject> partyMembers = new List<GameObject>(5);
+    [SerializeField] private List<GameObject> partyMembers = new List<GameObject>();
     [SerializeField] private int currentMemberIndex = 0;
 
     public Transform CameraFocusPoint => partyMembers[currentMemberIndex].transform;

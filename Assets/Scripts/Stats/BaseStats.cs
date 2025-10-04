@@ -10,3 +10,11 @@ public class BaseStats : ScriptableObject
     public int speed = 3;
     public int shootSpeed = 2;
 }
+
+public struct PublishStats
+{
+    public int Attack;
+    public int ShootRange;
+    public int Speed;
+    public int ShootSpeed;
+}

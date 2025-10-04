@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public Transform weapon;
 
     [SerializeField] Rigidbody2D rb;
+    [SerializeField] PlayerStatsChannel playerStatsChannel;
 
     private Camera mainCamera;
     private FireController fireController;
@@ -44,6 +45,8 @@ public class PlayerController : MonoBehaviour
             verticalMove = Input.GetAxisRaw("Vertical");
             moveInput.x = horizontalMove;
             moveInput.y = verticalMove;
+
+            playerStatsChannel?.Invoke(entity.Stats.ToPublish());
         }
 
         aimDirection = Target();

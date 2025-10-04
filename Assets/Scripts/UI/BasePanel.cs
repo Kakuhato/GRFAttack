@@ -46,8 +46,4 @@ public class BasePanel : MonoBehaviour
         OnClosePanel.Invoke(this.PanelName);
         Destroy(this.gameObject);
     }
-
-    public virtual void UpdatePanelData(int data)
-    {
-    }
 }

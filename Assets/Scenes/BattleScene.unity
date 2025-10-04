@@ -10101,6 +10101,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Doll (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2254967435548758076, guid: 0d574ced7a2ccd54a81a61508de6f739, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10267,11 +10271,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &595984760 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2254967435548758076, guid: 0d574ced7a2ccd54a81a61508de6f739, type: 3}
-  m_PrefabInstance: {fileID: 909219609}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &608128529
 GameObject:
   m_ObjectHideFlags: 0
@@ -10639,6 +10638,10 @@ PrefabInstance:
     - target: {fileID: 2254967435548758076, guid: 0d574ced7a2ccd54a81a61508de6f739, type: 3}
       propertyPath: m_Name
       value: Doll (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2254967435548758076, guid: 0d574ced7a2ccd54a81a61508de6f739, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -20058,16 +20061,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: Doll (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 2254967435548758076, guid: 0d574ced7a2ccd54a81a61508de6f739, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d574ced7a2ccd54a81a61508de6f739, type: 3}
---- !u!1 &950408843 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2254967435548758076, guid: 0d574ced7a2ccd54a81a61508de6f739, type: 3}
-  m_PrefabInstance: {fileID: 661838248}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1145682206
 GameObject:
   m_ObjectHideFlags: 0
@@ -56934,11 +56936,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!1 &1435719751 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2254967435548758076, guid: 0d574ced7a2ccd54a81a61508de6f739, type: 3}
-  m_PrefabInstance: {fileID: 2115159069}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1568564863
 GameObject:
   m_ObjectHideFlags: 0
@@ -57151,11 +57148,6 @@ MonoBehaviour:
   debugMode: 0
   enemyAnimation: {fileID: 0}
   debugDrawer: {fileID: 0}
---- !u!1 &1850421223 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2254967435548758076, guid: 0d574ced7a2ccd54a81a61508de6f739, type: 3}
-  m_PrefabInstance: {fileID: 515609064}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1967840386
 GameObject:
   m_ObjectHideFlags: 0
@@ -57190,10 +57182,6 @@ MonoBehaviour:
   maxPartySize: 5
   partyMembers:
   - {fileID: 719683328}
-  - {fileID: 1435719751}
-  - {fileID: 1850421223}
-  - {fileID: 950408843}
-  - {fileID: 595984760}
   currentMemberIndex: 0
 --- !u!4 &1967840388
 Transform:
@@ -57386,6 +57374,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Doll (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2254967435548758076, guid: 0d574ced7a2ccd54a81a61508de6f739, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -57456,6 +57448,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1291336018399078837, guid: 0d574ced7a2ccd54a81a61508de6f739, type: 3}
+      propertyPath: playerStatsChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 59ff4c602e6f8c544ab339735e81eb6a, type: 2}
     - target: {fileID: 1804050488105287967, guid: 0d574ced7a2ccd54a81a61508de6f739, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.42
@@ -57529,5 +57525,5 @@ SceneRoots:
   - {fileID: 101520639}
   - {fileID: 3740638252175075641}
   - {fileID: 524469618}
-  - {fileID: 417039118}
   - {fileID: 1568564865}
+  - {fileID: 417039118}

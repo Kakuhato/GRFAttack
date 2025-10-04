@@ -11,7 +11,6 @@ public class PlayerStats : Entity
     [SerializeField, InlineEditor, Required]
     private HealthData healthData;
 
-
     protected override void Awake()
     {
         base.Awake();

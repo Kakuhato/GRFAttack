@@ -82,14 +82,6 @@ public class UIManager : RegulatorSingleton<UIManager>
         // panels.Clear();
     }
 
-    public void UpdatePanel(int data)
-    {
-        foreach (var panel in panels.Values)
-        {
-            panel.UpdatePanelData(data);
-        }
-    }
-
     protected override void InitialSingleton()
     {
         base.InitialSingleton();

@@ -64,6 +64,17 @@ public class Stats
         this.baseStats = baseStats;
     }
 
+    public PublishStats ToPublish()
+    {
+        return new PublishStats
+        {
+            Attack = (int)Attack,
+            ShootRange = (int)ShootRange,
+            Speed = (int)Speed,
+            ShootSpeed = (int)ShootSpeed
+        };
+    }
+
     public override string ToString() =>
         $"Attack: {Attack}, ShootRange: {ShootRange}, Speed: {Speed}, ShootSpeed: {ShootSpeed}";
 }
