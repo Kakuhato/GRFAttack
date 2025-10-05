@@ -11,8 +11,10 @@ public class PlayerStats : Entity
     [SerializeField, InlineEditor, Required]
     private HealthData healthData;
 
+
     protected override void Awake()
     {
+        IsDead = true;
         base.Awake();
         Health = new Health(healthData);
     }
@@ -23,7 +25,7 @@ public class PlayerStats : Entity
         for (int i = 1; i <= damage; i++)
         {
             Health.RemoveHeart();
-            EventBus<HealthEvent>.Raise(new HealthEvent { hurts = 1 });
+            EventBus<HealthEvent>.Raise(new HealthEvent { hurts = 1, idx = this.transform });
 
             if (Health.GetCurrentRed() <= 0)
             {
@@ -33,11 +35,13 @@ public class PlayerStats : Entity
         }
     }
 
+
     public override bool Heal(float amount)
     {
         if (Health.AddHeart(HealthType.Soul))
         {
-            EventBus<HealthEvent>.Raise(new HealthEvent { healthType = HealthType.Soul, hurts = -1 });
+            EventBus<HealthEvent>.Raise(new HealthEvent
+                { healthType = HealthType.Soul, hurts = -1, idx = this.transform });
             return true;
         }
         else
@@ -49,10 +53,20 @@ public class PlayerStats : Entity
     public void Die()
     {
         // EventBus<GameOverEvent>.Raise(new GameOverEvent());
+        IsDead = true;
+        Raise();
+    }
+
+    public override void Revive()
+    {
+        base.Revive();
+        Health.Init(healthData);
+        // EventBus<HealthEvent>.Raise(new HealthEvent { healthType = HealthType.Red, hurts = -HealthData.MAX_HEATH });
     }
 
     public override List<int> GetHealthInfo()
     {
+        Debug.Log("GetHealthInfo: " + Health.GetCurrentRed() + ", " + Health.GetCurrentSoul());
         return new List<int> { Health.GetCurrentRed(), Health.GetCurrentSoul() };
     }
 }

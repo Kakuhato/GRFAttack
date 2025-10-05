@@ -7,16 +7,14 @@ using UnityEngine.Serialization;
 
 public class GameManager : RegulatorSingleton<GameManager>
 {
-    [SerializeField] private GameObject player;
+    [SerializeField] private PlayerPartyManager party;
     [SerializeField] StringEventChannel gameScoreEventChannel;
-
-    public List<int> playerHealthInfo;
 
     private EventBinding<GameOverEvent> gameOverEventBinding;
     private EventBinding<EnemyDieEvent> scoreEventBinding;
 
 
-    public Transform PlayerTransform => player.transform;
+    public Transform PlayerTransform => party.CameraFocusPoint;
 
     public int Score { private set; get; }
 
@@ -45,8 +43,8 @@ public class GameManager : RegulatorSingleton<GameManager>
         Score = 0;
         UIManager.Instance.ShowPanel<GamePanel>();
 
-        player = GameObject.Find("Doll");
-        playerHealthInfo = player.GetComponent<PlayerStats>().GetHealthInfo();
+        party = GameObject.Find("PlayerParty")?.GetComponent<PlayerPartyManager>();
+        EventBus<FreshHealthEvent>.Raise(new FreshHealthEvent { red = 5, soul = 5 });
 
         EnemySpawner.Instance.StartSpawning();
     }
@@ -55,6 +53,8 @@ public class GameManager : RegulatorSingleton<GameManager>
     {
         // TODO: 转换为延迟加载场景
         SceneManager.LoadScene("Scenes/BattleScene");
+        // AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Scenes/BattleScene", LoadSceneMode.Single);
+        // asyncLoad.completed += (AsyncOperation op) => { InitBattle(); };
     }
 
     public void Move2Begin()

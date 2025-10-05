@@ -11,6 +11,11 @@ public class Entity : MonoBehaviour, IVisitable
 
     public Stats Stats { get; private set; }
 
+    public virtual bool IsDead { get; set; } = false;
+    public event Action OnDead = delegate { };
+
+    protected void Raise() => OnDead?.Invoke();
+
 
     protected virtual void Awake()
     {
@@ -45,8 +50,13 @@ public class Entity : MonoBehaviour, IVisitable
         // TODO: 不要传入方向，传入打击者的位置和力度
     }
 
+    public virtual void Revive()
+    {
+        IsDead = false;
+    }
+
     public virtual List<int> GetHealthInfo()
     {
-        return new List<int>();
+        return new List<int>(2);
     }
 }

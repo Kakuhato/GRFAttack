@@ -19,7 +19,6 @@ public class Chaser : Entity, IVisitor
     private ChaseAI chaseAI;
     private IPoolable poolable;
     private bool isKnockback = false;
-    private bool isDead = false;
 
 
     private Transform target;
@@ -43,7 +42,7 @@ public class Chaser : Entity, IVisitor
 
     private void OnEnable()
     {
-        isDead = false;
+        base.Revive();
         col.enabled = true;
     }
 
@@ -67,7 +66,7 @@ public class Chaser : Entity, IVisitor
 
     private void FixedUpdate()
     {
-        if (isDead) return;
+        if (IsDead) return;
         chaseAI.FixedTick(isKnockback);
 
         if (isKnockback && rb.velocity.magnitude < 1.5f)
@@ -109,12 +108,13 @@ public class Chaser : Entity, IVisitor
 
     public void Die()
     {
-        if (isDead) return;
-        isDead = true;
+        if (IsDead) return;
+        IsDead = true;
         col.enabled = false;
 
         rb.velocity = Vector2.zero;
 
+        // TODO: 用 Action OnDead 重构
         enemyAnimation.Die().Complete += OnDeathAnimationComplete;
     }
 
@@ -126,7 +126,7 @@ public class Chaser : Entity, IVisitor
 
             curhealth = originHelth;
 
-            Debug.Log("Chaser Die" + Time.time);
+            // Debug.Log("Chaser Die" + Time.time);
 
             EventBus<EnemyDieEvent>.Raise(new EnemyDieEvent
                 { ScoreGained = (int)originHelth, Position = this.transform.position });
@@ -135,10 +135,6 @@ public class Chaser : Entity, IVisitor
         }
     }
 
-    public override List<int> GetHealthInfo()
-    {
-        return new List<int> { (int)originHelth };
-    }
 
     public override void KickBack(Vector2 direction)
     {

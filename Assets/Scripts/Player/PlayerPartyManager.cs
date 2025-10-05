@@ -6,9 +6,6 @@ using Random = UnityEngine.Random;
 
 public class PlayerPartyManager : MonoBehaviour
 {
-    public GameObject playerPrefab;
-    public GameObject dummyPrefab;
-
     [Header("Party Settings")] [SerializeField]
     private int maxPartySize = 5;
 
@@ -19,21 +16,55 @@ public class PlayerPartyManager : MonoBehaviour
 
     private Vector3 lastMainPosition;
     private Vector3 lastMoveDirection;
+    private PlayerController currentController;
+    private bool isOver = false;
 
     private void Start()
     {
-        SetMainController(0);
         lastMainPosition = partyMembers[currentMemberIndex].transform.position;
         lastMoveDirection = Vector3.zero;
+
+        SetMainController(0);
+        // currentController = partyMembers[currentMemberIndex].GetComponent<PlayerController>();
+        currentController.Revive();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (currentController.IsDead)
         {
-            SetMainController((currentMemberIndex + 1) % partyMembers.Count);
+            if (!TrySetMainController() && !isOver)
+            {
+                isOver = true;
+                EventBus<GameOverEvent>.Raise(new GameOverEvent());
+            }
         }
 
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            TrySetMainController();
+        }
+
+        PartyMove();
+    }
+
+    public bool TrySetMainController()
+    {
+        int nextIdx = (currentMemberIndex + 1) % partyMembers.Count;
+        while (partyMembers[nextIdx].GetComponent<PlayerController>().IsDead)
+        {
+            nextIdx = (nextIdx + 1) % partyMembers.Count;
+            if (nextIdx == currentMemberIndex) return false; // All are dead
+        }
+
+        SetMainController(nextIdx);
+        List<int> newHealth = new List<int>(currentController.entity.GetHealthInfo());
+        EventBus<FreshHealthEvent>.Raise(new FreshHealthEvent { red = newHealth[0], soul = newHealth[1] });
+        return true;
+    }
+
+    public void PartyMove()
+    {
         Vector3[] triangleOffsets = new Vector3[]
         {
             Vector3.zero,
@@ -73,6 +104,8 @@ public class PlayerPartyManager : MonoBehaviour
 
             var pc = partyMembers[i].GetComponent<PlayerController>();
 
+            if (pc.IsDead) continue;
+
             Quaternion rotation = Quaternion.FromToRotation(Vector3.up, lastMoveDirection.normalized);
             Vector3 offset = rotation * crossOffsets[offsetIndex++];
 
@@ -91,6 +124,7 @@ public class PlayerPartyManager : MonoBehaviour
 
         partyMembers[currentMemberIndex].GetComponent<PlayerController>().SetMainController(false);
         currentMemberIndex = index;
+        currentController = partyMembers[currentMemberIndex].GetComponent<PlayerController>();
         partyMembers[currentMemberIndex].GetComponent<PlayerController>().SetMainController(true);
     }
 }

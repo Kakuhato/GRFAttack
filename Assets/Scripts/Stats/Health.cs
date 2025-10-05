@@ -10,9 +10,7 @@ public class Health
 
     public Health(HealthData healthData)
     {
-        this.redLimit = healthData.redLimit;
-        this.currentRed = healthData.currentRed;
-        this.currentSoul = healthData.currentSoul;
+        Init(healthData);
     }
 
     public bool AddHeart(HealthType healthType)
@@ -66,5 +64,13 @@ public class Health
     public int GetCurrentSoul()
     {
         return this.currentSoul;
+    }
+
+    public void Init(HealthData healthData)
+    {
+        Debug.Log("Init Health: " + healthData.redLimit + ", " + healthData.currentRed + ", " + healthData.currentSoul);
+        this.redLimit = healthData.redLimit;
+        this.currentRed = healthData.currentRed;
+        this.currentSoul = healthData.currentSoul;
     }
 }

@@ -19,7 +19,7 @@ public class BuffSpawner : RegulatorSingleton<BuffSpawner>
         }
 
         BuffData selectedBuff = GetRandomBuff();
-        Debug.Log("Spawning buff: " + selectedBuff.type);
+        // Debug.Log("Spawning buff: " + selectedBuff.type);
         GameObject buffObject = PoolManager.Instance.SpawnObject(buffPrefab, data.Position, PoolType.Buff);
         buffObject.GetComponent<BuffBase>().Init(selectedBuff);
         buffObject.SetActive(true);

@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
 
     public Transform weapon;
 
+    public bool IsDead => entity.IsDead;
+
     [SerializeField] Rigidbody2D rb;
     [SerializeField] PlayerStatsChannel playerStatsChannel;
 
@@ -26,19 +28,35 @@ public class PlayerController : MonoBehaviour
     private bool isMainController = false;
     private bool isFollowing = false;
 
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
         mainCamera = Camera.main;
         fireController = weapon.GetComponent<FireController>();
         entity = GetComponent<Entity>();
         animanationController = GetComponent<AnimationController>();
         rb = GetComponent<Rigidbody2D>();
+        this.fireController.gameObject.SetActive(false);
+    }
+
+    void Start()
+    {
+        animanationController.Dead();
+
+        entity.OnDead += () =>
+        {
+            rb.velocity = Vector2.zero;
+            animanationController.Dead();
+            this.gameObject.layer = LayerMask.NameToLayer("DeadPlayer");
+            this.fireController.gameObject.SetActive(false);
+        };
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (IsDead) return;
+
         if (isMainController)
         {
             horizontalMove = Input.GetAxisRaw("Horizontal");
@@ -62,7 +80,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!isMainController) return;
+        if (!isMainController || IsDead) return;
         Move();
     }
 
@@ -125,7 +143,6 @@ public class PlayerController : MonoBehaviour
         );
         if (colliders.Length > 0)
         {
-            print("?");
             foreach (var collider in colliders)
             {
                 if (collider.CompareTag("Enemy"))
@@ -141,11 +158,30 @@ public class PlayerController : MonoBehaviour
         isMainController = isMain;
     }
 
+    public void Revive()
+    {
+        entity.Revive();
+        this.gameObject.layer = LayerMask.NameToLayer("Player");
+        this.fireController.gameObject.SetActive(true);
+    }
+
     private void OnCollisionStay2D(Collision2D other)
     {
         if (other.collider.CompareTag("ForeGround"))
         {
             isFollowing = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            var sc = other.GetComponent<PlayerController>();
+            if (sc != null && sc.IsDead)
+            {
+                sc.Revive();
+            }
         }
     }
 }

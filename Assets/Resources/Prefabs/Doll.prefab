@@ -119,8 +119,8 @@ MonoBehaviour:
     materialsInsideMask: []
     materialsOutsideMask: []
   disableRenderingOnOverride: 1
-  _animationName: wait
-  loop: 1
+  _animationName: die
+  loop: 0
   timeScale: 1
 --- !u!114 &876436262761615522
 MonoBehaviour:
@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 2018659239768299947}
   - component: {fileID: 4381735817133441029}
   - component: {fileID: 2226265561390593165}
-  m_Layer: 6
+  m_Layer: 12
   m_Name: Doll
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -190,6 +190,7 @@ MonoBehaviour:
   animanationController: {fileID: 4381735817133441029}
   weapon: {fileID: 3974728690380682139}
   rb: {fileID: 0}
+  playerStatsChannel: {fileID: 11400000, guid: 59ff4c602e6f8c544ab339735e81eb6a, type: 2}
 --- !u!70 &374008244409527556
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

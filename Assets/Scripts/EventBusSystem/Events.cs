@@ -19,6 +19,13 @@ public struct HealthEvent : IEvent
 {
     public int hurts;
     public HealthType healthType;
+    public Transform idx;
+}
+
+public struct FreshHealthEvent : IEvent
+{
+    public int red;
+    public int soul;
 }
 
 public struct GameOverEvent : IEvent

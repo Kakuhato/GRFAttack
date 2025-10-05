@@ -13,12 +13,15 @@ public class HealthBar : MonoBehaviour
     private GameObject heartItem;
     private LinkedList<GameObject> heartList = new LinkedList<GameObject>();
     private EventBinding<HealthEvent> healthEventBinding;
+    private EventBinding<FreshHealthEvent> freshHealthEventBinding;
 
 
     private int HealthLimit = 10;
 
     public void ChangeHeart(HealthEvent healthEvent)
     {
+        if (healthEvent.idx != GameManager.Instance.PlayerTransform) return;
+
         if (healthEvent.hurts > 0)
         {
             RemoveHealth();
@@ -34,11 +37,15 @@ public class HealthBar : MonoBehaviour
     {
         healthEventBinding = new EventBinding<HealthEvent>(ChangeHeart);
         EventBus<HealthEvent>.Register(healthEventBinding);
+
+        freshHealthEventBinding = new EventBinding<FreshHealthEvent>(Draw);
+        EventBus<FreshHealthEvent>.Register(freshHealthEventBinding);
     }
 
     private void OnDisable()
     {
         EventBus<HealthEvent>.Unregister(healthEventBinding);
+        EventBus<FreshHealthEvent>.Unregister(freshHealthEventBinding);
     }
 
     public void AddHealth(HealthType healthType)
@@ -86,9 +93,24 @@ public class HealthBar : MonoBehaviour
             Debug.LogError("HealthData is not assigned in the inspector.");
             return;
         }
+    }
 
-        int redCount = GameManager.Instance.playerHealthInfo[0];
-        int soulCount = GameManager.Instance.playerHealthInfo[1];
+    public void Draw(FreshHealthEvent freshHealthEvent)
+    {
+        // int redCount = GameManager.Instance.playerHealthInfo[0];
+        // int soulCount = GameManager.Instance.playerHealthInfo[1];
+
+        int redCount = freshHealthEvent.red;
+        int soulCount = freshHealthEvent.soul;
+
+        Debug.Log(" Draw HealthBar: " + redCount + ", " + soulCount);
+
+        foreach (var heart in heartList)
+        {
+            Destroy(heart);
+        }
+
+        heartList.Clear();
 
         heartItem = Resources.Load<GameObject>("UI/Heart");
         for (int i = 0; i < redCount; i++)
@@ -106,7 +128,6 @@ public class HealthBar : MonoBehaviour
 
         RemoveExtraHeart();
     }
-
 
     // Update is called once per frame
     void Update()
