@@ -313,6 +313,7 @@ MonoBehaviour:
   sa: {fileID: 6727358037012357625}
   walk: walk
   idle: wait
+  die: die
   boneName: target2
 --- !u!114 &2226265561390593165
 MonoBehaviour:

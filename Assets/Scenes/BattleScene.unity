@@ -57182,8 +57182,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e936d1277019d7548accaf39612ccbea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 0}
-  dummyPrefab: {fileID: 0}
   maxPartySize: 5
   partyMembers:
   - {fileID: 719683328}
@@ -57334,11 +57332,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1804050488105287967, guid: 0d574ced7a2ccd54a81a61508de6f739, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.7
+      value: -3.43
       objectReference: {fileID: 0}
     - target: {fileID: 1804050488105287967, guid: 0d574ced7a2ccd54a81a61508de6f739, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.61
+      value: 2.73
       objectReference: {fileID: 0}
     - target: {fileID: 1804050488105287967, guid: 0d574ced7a2ccd54a81a61508de6f739, type: 3}
       propertyPath: m_LocalPosition.z

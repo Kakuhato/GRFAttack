@@ -103,7 +103,7 @@ public class HealthBar : MonoBehaviour
         int redCount = freshHealthEvent.red;
         int soulCount = freshHealthEvent.soul;
 
-        Debug.Log(" Draw HealthBar: " + redCount + ", " + soulCount);
+        // Debug.Log(" Draw HealthBar: " + redCount + ", " + soulCount);
 
         foreach (var heart in heartList)
         {

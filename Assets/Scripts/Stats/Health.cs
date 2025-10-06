@@ -68,7 +68,7 @@ public class Health
 
     public void Init(HealthData healthData)
     {
-        Debug.Log("Init Health: " + healthData.redLimit + ", " + healthData.currentRed + ", " + healthData.currentSoul);
+        // Debug.Log("Init Health: " + healthData.redLimit + ", " + healthData.currentRed + ", " + healthData.currentSoul);
         this.redLimit = healthData.redLimit;
         this.currentRed = healthData.currentRed;
         this.currentSoul = healthData.currentSoul;

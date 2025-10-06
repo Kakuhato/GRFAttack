@@ -43,6 +43,7 @@ public class Chaser : Entity, IVisitor
     private void OnEnable()
     {
         base.Revive();
+        IsDead = false;
         col.enabled = true;
     }
 
@@ -106,7 +107,7 @@ public class Chaser : Entity, IVisitor
         }
     }
 
-    public void Die()
+    public override void Die()
     {
         if (IsDead) return;
         IsDead = true;

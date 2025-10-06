@@ -11,6 +11,7 @@ public class AnimationController : MonoBehaviour
 
     [SpineAnimation] public string walk;
     [SpineAnimation] public string idle;
+    [SpineAnimation] public string die;
     [SpineBone] public string boneName;
 
     private Vector2 mousePos;
@@ -20,25 +21,51 @@ public class AnimationController : MonoBehaviour
     private float lastDirection = 1f;
     private float lastScaleX = 1f;
 
-    private bool isDead = true;
+    private bool isDead = false;
 
     // Start is called before the first frame update
     void Awake()
     {
-        // sa.state.SetAnimation(0, walk, true);
+        if (sa == null)
+        {
+            sa = GetComponent<SkeletonAnimation>();
+        }
+    }
+
+    private void Start()
+    {
+        if (!sa.valid)
+            sa.Initialize(false);
+
         mainCamera = Camera.main;
         cross = sa.Skeleton.FindBone(boneName);
-        CurrentEntry = sa.AnimationState.SetAnimation(0, idle, true);
+        // CurrentEntry = sa.AnimationState.SetAnimation(0, idle, true);
+        // PlayAnimation(idle, true);
+        // isDead = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isDead) return;
+        if (isDead || sa == null || sa.Skeleton == null) return;
+
         Aim();
-        if (CurrentEntry.TimeScale < 0 && CurrentEntry.TrackTime <= 0f)
+
+        if (CurrentEntry != null && CurrentEntry.TimeScale < 0 && CurrentEntry.TrackTime <= 0f)
         {
             CurrentEntry.TrackTime = CurrentEntry.AnimationEnd;
+        }
+    }
+
+    private void PlayAnimation(string animationName, bool loop)
+    {
+        if (sa == null || sa.AnimationState == null) return;
+        CurrentEntry = sa.AnimationState.SetAnimation(0, animationName, loop);
+        // Debug.Log($"Playing animation: {CurrentEntry.Animation.Name}");
+
+        if (CurrentEntry == null || CurrentEntry.Animation == null)
+        {
+            Debug.LogError($"Animation {animationName} not found in the skeleton.");
         }
     }
 
@@ -63,20 +90,23 @@ public class AnimationController : MonoBehaviour
 
     public void Idle()
     {
-        if (CurrentEntry.Animation != null && CurrentEntry.Animation.Name == idle) return;
-        CurrentEntry = sa.AnimationState.SetAnimation(0, idle, true);
-        isDead = false;
-        sa.transform.localPosition = new Vector3(0, -0.5f, 0);
+        if (isDead) return;
+
+        if (CurrentEntry == null || CurrentEntry.Animation == null || CurrentEntry.Animation.Name != idle)
+        {
+            PlayAnimation(idle, true);
+        }
     }
 
     public void Walk(float direction)
     {
+        if (isDead) return;
+
         if (CurrentEntry.Animation != null && CurrentEntry.Animation.Name == walk && direction * lastDirection >= 0 &&
             lastScaleX * sa.Skeleton.ScaleX >= 0) return;
         lastDirection = direction >= 0 ? 1f : -1f;
         lastScaleX = sa.Skeleton.ScaleX;
-        CurrentEntry = sa.AnimationState.SetAnimation(0, walk, true);
-        sa.transform.localPosition = new Vector3(0, -0.5f, 0); // TODO： 做成委托
+        PlayAnimation(walk, true);
 
         if (direction * sa.Skeleton.ScaleX < 0f)
         {
@@ -92,14 +122,18 @@ public class AnimationController : MonoBehaviour
 
     public void Dead()
     {
-        Debug.Log("1: " + CurrentEntry);
-        Debug.Log("2: " + CurrentEntry.Animation);
-        Debug.Log("3: " + CurrentEntry);
-
-
-        if (CurrentEntry.Animation != null && CurrentEntry.Animation.Name == "die") return;
-        sa.AnimationState.SetAnimation(0, "die", false);
+        if (isDead) return;
         isDead = true;
+
+        PlayAnimation(die, false);
+
         sa.transform.localPosition = new Vector3(1.5f * sa.Skeleton.ScaleX, -0.5f, 0);
+    }
+
+    public void Revive()
+    {
+        isDead = false;
+        PlayAnimation(idle, true);
+        sa.transform.localPosition = new Vector3(0, -0.5f, 0);
     }
 }

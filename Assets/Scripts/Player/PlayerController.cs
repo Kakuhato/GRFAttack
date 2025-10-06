@@ -37,24 +37,21 @@ public class PlayerController : MonoBehaviour
         animanationController = GetComponent<AnimationController>();
         rb = GetComponent<Rigidbody2D>();
         this.fireController.gameObject.SetActive(false);
+
+        entity.OnDeath += HandleDeath;
+        entity.OnRevive += HandleRevive;
+        entity.Die();
+        // 之后变成prefab感觉这个Awake逻辑绝对会出问题
     }
 
     void Start()
     {
-        animanationController.Dead();
-
-        entity.OnDead += () =>
-        {
-            rb.velocity = Vector2.zero;
-            animanationController.Dead();
-            this.gameObject.layer = LayerMask.NameToLayer("DeadPlayer");
-            this.fireController.gameObject.SetActive(false);
-        };
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Debug.Log(this.gameObject.name + IsDead);
         if (IsDead) return;
 
         if (isMainController)
@@ -88,6 +85,7 @@ public class PlayerController : MonoBehaviour
     public void Move()
     {
         rb.velocity = entity.Stats.Speed * moveInput.normalized;
+        // Debug.Log(this.gameObject.name + " move: " + rb.velocity);
         if (moveInput.magnitude > 0) animanationController.Walk(horizontalMove);
         else animanationController.Idle();
     }
@@ -102,7 +100,7 @@ public class PlayerController : MonoBehaviour
         {
             isFollowing = true;
         }
-        else if (distance <= 0.01f)
+        else if (distance <= 0.1f)
         {
             isFollowing = false;
         }
@@ -115,6 +113,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             rb.velocity = Vector2.zero;
+            // Debug.Log(this.gameObject.name + " stop follow.");
             animanationController.Idle();
         }
     }
@@ -158,11 +157,26 @@ public class PlayerController : MonoBehaviour
         isMainController = isMain;
     }
 
+
+    private void HandleDeath()
+    {
+        rb.velocity = Vector2.zero;
+        animanationController.Dead();
+        this.gameObject.layer = LayerMask.NameToLayer("DeadPlayer");
+        this.fireController.gameObject.SetActive(false);
+        // Debug.Log(this.gameObject.name + " is dead.");
+    }
+
+    private void HandleRevive()
+    {
+        animanationController.Revive();
+        this.gameObject.layer = LayerMask.NameToLayer("Player");
+        this.fireController.gameObject.SetActive(true);
+    }
+
     public void Revive()
     {
         entity.Revive();
-        this.gameObject.layer = LayerMask.NameToLayer("Player");
-        this.fireController.gameObject.SetActive(true);
     }
 
     private void OnCollisionStay2D(Collision2D other)

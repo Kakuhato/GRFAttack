@@ -11,10 +11,8 @@ public class PlayerStats : Entity
     [SerializeField, InlineEditor, Required]
     private HealthData healthData;
 
-
     protected override void Awake()
     {
-        IsDead = true;
         base.Awake();
         Health = new Health(healthData);
     }
@@ -25,11 +23,13 @@ public class PlayerStats : Entity
         for (int i = 1; i <= damage; i++)
         {
             Health.RemoveHeart();
+
             EventBus<HealthEvent>.Raise(new HealthEvent { hurts = 1, idx = this.transform });
 
-            if (Health.GetCurrentRed() <= 0)
+            if (Health.GetCurrentRed() <= 0) // TODO: 修改血量逻辑
             {
                 Die();
+                EventBus<PlayerDieEvent>.Raise(new PlayerDieEvent { playerTransform = this.transform });
                 break;
             }
         }
@@ -50,18 +50,19 @@ public class PlayerStats : Entity
         }
     }
 
-    public void Die()
+    public override void Die()
     {
-        // EventBus<GameOverEvent>.Raise(new GameOverEvent());
+        if (IsDead) return;
         IsDead = true;
-        Raise();
+        RaiseOnDeath();
     }
 
     public override void Revive()
     {
-        base.Revive();
+        if (!IsDead) return;
+        IsDead = false;
         Health.Init(healthData);
-        // EventBus<HealthEvent>.Raise(new HealthEvent { healthType = HealthType.Red, hurts = -HealthData.MAX_HEATH });
+        RaiseOnRevive();
     }
 
     public override List<int> GetHealthInfo()

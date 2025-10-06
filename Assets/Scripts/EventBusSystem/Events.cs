@@ -9,10 +9,9 @@ public struct TestEvnet : IEvent
 {
 }
 
-public struct PlayerEvent : IEvent
+public struct PlayerDieEvent : IEvent
 {
-    public int health;
-    public int score;
+    public Transform playerTransform;
 }
 
 public struct HealthEvent : IEvent
