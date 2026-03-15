@@ -1,0 +1,14 @@
+{
+  "project": {
+    "name": "GRFAttack",
+    "type": "Unity 2D Game",
+    "language": "C#",
+    "unity_version": "2022.3+",
+    "description": "俯视角动作射击游戏，探索游戏设计模式"
+  },
+  "preferences": {
+    "response_language": "zh-CN",
+    "code_comments": "zh-CN",
+    "documentation": "zh-CN"
+  }
+}
